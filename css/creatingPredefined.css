@@ -1,0 +1,13 @@
+div.card-body input {
+  width: 100%;
+}
+input {
+  margin: 5px;
+}
+#submitButton {
+  float: right;
+}
+div.row {
+  margin-top: 1%;
+  margin-bottom: 1%;
+}
