@@ -1,12 +1,12 @@
 <?php
 	include '../config/config.php';
-    include_once('../admin/functions.php');
+	include_once('../admin/functions.php');
 
-    session_start();
+	session_start();
 
-    areULogin();
+	areULogin();
 
-    $actualLoginUser = $_SESSION['login'];
+	$actualLoginUser = $_SESSION['login'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,31 +19,90 @@
 		include_once ('../navigator_inside.php');
 	?>
 	<!--Development: begin-->
-    <script>
-        document.write('<link rel="stylesheet" type="text/css" href="../css/collections_index.css?dev=' + Math.floor(Math.random() * 100) + '">');
-        document.write('<link rel="stylesheet" type="text/css" href="../css/collections_createPredefined.css?dev=' + Math.floor(Math.random() * 100) + '">');
-    </script>
-    <!--<link rel="stylesheet" type="text/css" href="../css/collections_index.css">-->
-    <!--<link rel="stylesheet" type="text/css" href="../css/collections_createPredefined.css">-->
-    <!--Development: end-->
-	
+	<script>
+		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_index.css?dev=' + Math.floor(Math.random() * 100) + '">');
+		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_create.css?dev=' + Math.floor(Math.random() * 100) + '">');
+	</script>
+	<!--<link rel="stylesheet" type="text/css" href="../css/collections_index.css">-->
+	<!--<link rel="stylesheet" type="text/css" href="../css/collections_create.css">-->
+	<!--Development: end-->
 
-	
-		<div class="row card">
-			<div class="col-6 card-header">
-				<h5>
-					<span>➕ 🎵 </span>Añadir una lista de música
-				</h5>
-			</div>
-			<a href="./create_predefined.php">
-				<div class="col-6 card-header">
-					<font class="titles">
-						<span>➕ 📚 </span>Añadir una nueva colección personalizada
-					</font>
-				</div>
-			</a>
+	<br>
+
+	<?php
+		if(isset($_GET['result'])){
+			if ($_GET['result'] == 'ok'){
+				?>
+					<div class="alert alert-success">
+						Su nueva colección ha sido creada.
+					</div>
+				<?php
+			} else {
+				?>
+					<div class="alert alert-success">
+						Ha ocurrido un error al crear su colección.
+					</div>
+				<?php
+			}
+		}
+	?>
+
+	<div class="row">
+		<div class="col-12">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-dark">
+					<tr class="text-center">
+						<th>
+							➕ Crear una nueva colección ➕
+						</th>
+						<th>
+							<a href="./admin_collections.php">
+								👩‍💻 Administrar colecciones 👨‍💻
+							</a>
+						</th>
+					</tr>
+				</thead>
+			</table>
 		</div>
+	</div>
+
+	<div class="row d-flex justify-content-around">
+		<a href="./create_music.php">
+			<button type="button" class="btn btn-secondary">
+				<span>➕ 🎵</span> Añadir una lista de música
+			</button>
+		</a>
+
+		<a href="./create_movies.php">
+			<button type="button" class="btn btn-secondary">
+				<span>➕ 🎬</span> Añadir una lista de películas
+			</button>
+		</a>
+	</div>
 	
+	<div class="row d-flex justify-content-around">
+		<a href="./create_books.php">
+			<button type="button" class="btn btn-secondary">
+				<span>➕ 📚</span> Añadir una coleccion de libros
+			</button>
+		</a>
+	</div>
+
+	<div class="row d-flex justify-content-around">
+		<a href="./create_cans.php">
+			<button type="button" class="btn btn-secondary">
+				<span>➕ 🥫</span> Añadir una coleccion de latas
+			</button>
+		</a>
+
+		<a href="./create_predefined.php">
+			<button type="button" class="btn btn-secondary">
+				<span>➕ 📝</span> Añadir una nueva colección personalizada
+			</button>
+		</a>
+	</div>
+
+	<br>
 
 	<?php
 		/* Listas de música */
@@ -57,8 +116,8 @@
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-dark">
 							<tr>
 								<th colspan="3">
 									<h5>
@@ -67,7 +126,7 @@
 								</th>
 							</tr>
 							<tr>
-								<th>
+								<th max-width="200px">
 									Imagen descriptiva
 								</th>
 								<th>
@@ -81,15 +140,16 @@
 						<tbody>
 							<?php
 								while($actualRow = mysqli_fetch_assoc($data)){
+									$actualID = $actualRow['ID'];
 									?>
-										<tr>
-											<td>
-												<img src="<?php echo $actualRow['Image']; ?>" width="150px">
+										<tr onclick="window.location='./view_music.php?id_collection=<?php echo $actualID; ?>'">
+											<td class="align-middle text-center">
+												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td>
-												<?php echo $actualRow['Name']; ?>
+											<td class="align-middle">
+												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td>
+											<td class="align-middle">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>
@@ -114,17 +174,17 @@
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-dark">
 							<tr>
 								<th colspan="3">
 									<h5>
-										📋 Listas de música 🎼
+										📋 Listas de latas 🥫
 									</h5>
 								</th>
 							</tr>
 							<tr>
-								<th>
+								<th max-width="200px">
 									Imagen descriptiva
 								</th>
 								<th>
@@ -138,15 +198,16 @@
 						<tbody>
 							<?php
 								while($actualRow = mysqli_fetch_assoc($data)){
+									$actualID = $actualRow['ID'];
 									?>
-										<tr>
-											<td>
-												<img src="<?php echo $actualRow['Image']; ?>" width="150px">
+										<tr onclick="window.location='./view_cans.php?id_collection=<?php echo $actualID; ?>'">
+											<td class="align-middle text-center">
+												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td>
-												<?php echo $actualRow['Name']; ?>
+											<td class="align-middle">
+												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td>
+											<td class="align-middle">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>
@@ -171,8 +232,8 @@
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-dark">
 							<tr>
 								<th colspan="3">
 									<h5>
@@ -181,7 +242,7 @@
 								</th>
 							</tr>
 							<tr>
-								<th>
+								<th max-width="200px">
 									Imagen descriptiva
 								</th>
 								<th>
@@ -195,15 +256,16 @@
 						<tbody>
 							<?php
 								while($actualRow = mysqli_fetch_assoc($data)){
+									$actualID = $actualRow['ID'];
 									?>
-										<tr>
-											<td>
-												<img src="<?php echo $actualRow['Image']; ?>" width="150px">
+										<tr onclick="window.location='./view_books.php?id_collection=<?php echo $actualID; ?>'">
+											<td class="align-middle text-center">
+												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td>
-												<?php echo $actualRow['Name']; ?>
+											<td class="align-middle">
+												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td>
+											<td class="align-middle">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>
@@ -228,8 +290,8 @@
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-dark">
 							<tr>
 								<th colspan="3">
 									<h5>
@@ -238,7 +300,7 @@
 								</th>
 							</tr>
 							<tr>
-								<th>
+								<th max-width="200px">
 									Imagen descriptiva
 								</th>
 								<th>
@@ -252,15 +314,16 @@
 						<tbody>
 							<?php
 								while($actualRow = mysqli_fetch_assoc($data)){
+									$actualID = $actualRow['ID'];
 									?>
-										<tr>
-											<td>
-												<img src="<?php echo $actualRow['Image']; ?>" width="150px">
+										<tr onclick="window.location='./view_movies.php?id_collection=<?php echo $actualID; ?>'">
+											<td class="align-middle text-center">
+												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td>
-												<?php echo $actualRow['Name']; ?>
+											<td class="align-middle">
+												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td>
+											<td class="align-middle">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>
@@ -285,8 +348,8 @@
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
-					<table class="table table-bordered">
-						<thead>
+					<table class="table table-bordered table-hover">
+						<thead class="thead-dark">
 							<tr>
 								<th colspan="3">
 									<h5>
@@ -295,7 +358,7 @@
 								</th>
 							</tr>
 							<tr>
-								<th>
+								<th max-width="200px">
 									Imagen descriptiva
 								</th>
 								<th>
@@ -309,15 +372,16 @@
 						<tbody>
 							<?php
 								while($actualRow = mysqli_fetch_assoc($data)){
+									$actualID = $actualRow['ID'];
 									?>
-										<tr>
-											<td>
-												<img src="<?php echo $actualRow['Image']; ?>" width="150px">
+										<tr onclick="window.location='./view_predefined.php?id_collection=<?php echo $actualID; ?>'">
+											<td class="align-middle text-center">
+												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td>
-												<?php echo $actualRow['Name']; ?>
+											<td class="align-middle">
+												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td>
+											<td class="align-middle">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>

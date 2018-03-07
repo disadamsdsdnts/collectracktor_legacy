@@ -1,17 +1,11 @@
 <?php
-	echo "Ho-la";
-
-    include_once ('../admin/functions.php');
+    include_once '../admin/functions.php';
 
     include '../config/config.php';
 
 	session_start();
 
-	/* DESARROLLO: inicio */
-	highlight_string("<?php\n\$_POST =\n" . var_export($_POST, true) . ";\n?>");
-
-	highlight_string("<?php\n\$_FILES =\n" . var_export($_FILES, true) . ";\n?>");
-	/* DESARROLLO: final */
+	areULogin();
 
 	if(isset($_POST)){
 		$collectionName = $_POST['collectionName'];
@@ -59,15 +53,15 @@
 
 		$result = mysqli_query($databaseConnection, $finalQuery);
 
-		/*
-		if($result){
-			header('Location: ./create_predefined.php?result=ok');
-		} else{
-			header('Location: ./create_predefined.php?result=error');
-		}*/
-
 		mysqli_close($databaseConnection);
-	} else {
+
+		if($result){
+			header('Location: ./index.php?result=ok');
+		} else{
+			header('Location: ./index.php?result=error');
+                }
+        
+            } else {
 		header('Location: ./create_predefined.php');
 	}
 	

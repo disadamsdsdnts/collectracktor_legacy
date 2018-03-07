@@ -1,7 +1,7 @@
 <?php
 	include_once './admin/functions.php';
 ?>
-
+<meta charset="utf-8">
 <script type="text/javascript" src="./js/jquery-3.2.1.slim.min.js"></script>
 <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
 <script type="text/javascript" src="./js/popper.min.js"></script>

@@ -2,6 +2,8 @@
     include_once('../admin/functions.php');
 
     session_start();
+
+    areULogin();
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,7 +15,7 @@
 	<?php 
 		include_once ('../navigator_inside.php');
 	?>
-    <link rel="stylesheet" type="text/css" href="../css/collections_createPredefined.css">
+    <link rel="stylesheet" type="text/css" href="../css/collections_create.css">
     <!--Development-->
     <script>
         document.write('<script src="../js/create_predefined.js?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');

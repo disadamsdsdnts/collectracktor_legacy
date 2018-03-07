@@ -1,15 +1,18 @@
-$(document).ready(function() {
-	function unicodeToChar(text) {
-	   return text.replace(/\\u[\dA-F]{4}/gi, 
-	          function (match) {
-	               return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
-	          });
-	}
+function unicodeToChar(text) {
+   return text.replace(/\\u[\dA-F]{4}/gi, 
+          function (match) {
+               return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+          });
+}
 
-    $(".searchEntry").on('click', function(event) {
+function recargaFunciones(){
+	$(document).on("click", "a.searchEntry", function(event) {
+    	event.preventDefault();
     	console.log("He entrado");
-    	console.log($(this).attr('value'));
-    	var query = 'link=' + $(this).attr('value');
+    	console.log($(this).attr('href'));
+    	var query = 'link=' + $(this).attr('href');
+
+    	console.log('Esto es resultado de ' + query);
 
     	$.ajax({
 		    type: 'GET',
@@ -20,17 +23,22 @@ $(document).ready(function() {
            	}
 		}).done(function (response){
 			if(response){
-				var finalData = response;
-				$("#itemName").val(response[0][1]['name']);
-				$("#itemYear").val(response[0][1]['year']);
-				$("#itemCast").val(response[0][1]['cast']);
-				$("#itemDirector").val(response[0][1]['director']);
-				$("#itemImage").val(response[0][1]['image']);
+				var queryResult = $.parseJSON('[' + response + ']');
+
+				$("#itemName").attr('value', queryResult[0][1]['name']);
+				$("#itemYear").attr('value', queryResult[0][1]['year']);
+				$("#itemCast").attr('value', queryResult[0][1]['cast']);
+				$("#itemDirector").attr('value', queryResult[0][1]['director']);
+				$("#itemImage").attr('value', queryResult[0][1]['image']);
         	}
 
-        	 $("#fieldSearch").html('<img src="../img/success.gif" style="width: 100%; max-width: 200px"></img>');
+        	$("#fieldSearch").html('<img src="../img/success.gif" style="width: 100%; max-width: 200px"></img>');
         });
-    }); 
+    });
+}
+
+$(document).ready(function() {
+	recargaFunciones();
 
 	$("#tryAgain").click(function(event) {
 		event.preventDefault();
@@ -59,32 +67,28 @@ $(document).ready(function() {
 			if(response){
 				//var result = eval(response);
 
-				var parapapapa = $.parseJSON('[' + response + ']');
+				var queryResult = $.parseJSON('[' + response + ']');
 
 				var showResults = '';
 
-				var size = parapapapa[0].length;
+				console.log(queryResult);
+				console.log(queryResult[0][0]);
 
-				console.log(size);
-				console.log(parapapapa);
-				console.log(parapapapa[0][0]);
-
-
-				if(parapapapa[0][0] == "search"){
-					parapapapa[0].splice(0, 1);
-					showResults = showResults + '<ul>';
-					for (var actual in parapapapa[0]){
-						showResults = showResults + '<li class="searchEntry" value="' + parapapapa[0][actual]['url'] + '">' + parapapapa[0][actual]['name'] + '</li> ';
+				if(queryResult[0][0] == "search"){
+					queryResult[0].splice(0, 1);
+					for (var actual in queryResult[0]){
+						showResults = showResults + '<h5><a href="' + queryResult[0][actual]['url'] + '" class="searchEntry"> ' + queryResult[0][actual]['name'] + ' </a></h5> <br>';
+						// showResults = showResults + '<li class="searchEntry" value="' + queryResult[0][actual]['url'] + '">' + queryResult[0][actual]['name'] + '</li> ';
 					}
 
-					showResults = showResults + '</ul>';
-				} else if (parapapapa[0][0] == "movie"){
-					/*showResults = '<a href="#"><div class="card card-header alert-info"> <strong>'+ parapapapa[0]['name'] + '</strong> (' + parapapapa[0]['year'] + ')</div> <div class="card card-body"> <img src=\"' + parapapapa[0]['image'] + '\" style=\"width: 100%;\"> </div> <br> </div> </a>';*/
-						$("#itemName").val(parapapapa[0][1]['name']);
-						$("#itemYear").val(parapapapa[0][1]['year']);
-						$("#itemCast").val(parapapapa[0][1]['cast']);
-						$("#itemDirector").val(parapapapa[0][1]['director']);
-						var addImage = '<input type=\"hidden\" value=\"' + parapapapa[0][1]['image'] + '\" name="itemImageFromWeb\">';
+					recargaFunciones();
+				} else if (queryResult[0][0] == "movie"){
+					/*showResults = '<a href="#"><div class="card card-header alert-info"> <strong>'+ queryResult[0]['name'] + '</strong> (' + queryResult[0]['year'] + ')</div> <div class="card card-body"> <img src=\"' + queryResult[0]['image'] + '\" style=\"width: 100%;\"> </div> <br> </div> </a>';*/
+						$("#itemName").val(queryResult[0][1]['name']);
+						$("#itemYear").val(queryResult[0][1]['year']);
+						$("#itemCast").val(queryResult[0][1]['cast']);
+						$("#itemDirector").val(queryResult[0][1]['director']);
+						var addImage = '<input type=\"hidden\" value=\"' + queryResult[0][1]['image'] + '\" name="itemImageFromWeb\">';
 						$("#formAdding").append(addImage);
 				} else {
 					showResults = 'No se han encontrado resultados.';

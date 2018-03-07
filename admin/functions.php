@@ -22,10 +22,6 @@
 
 	}
 
-	function showUserDefinedTable($datosConsulta, $listaCabecerasAMostrar){
-
-	}
-
 	function whatItIs($type){
 		switch ($type) {
 			case 'auto':
@@ -50,7 +46,41 @@
 	}
 
 	function areULogin(){
+		include('../config/config.php');
+
 		if(!isset($_SESSION['login'])){
 			header('Location:../login.php');
 		}
+	}
+
+	function isAImagePath($field){
+		$result = FALSE;
+
+		$imageExtensions = array(
+			'.jpg', '.jpeg', '.png', '.gif', '.bmp'
+		);
+
+		$imgPath = 'img/';
+
+		foreach ($imageExtensions as $actualExt) {
+			if((strrpos($field, $actualExt) !== FALSE) && (strrpos($field, $imgPath) !== FALSE)){
+				$result = TRUE;
+			}
+		}
+
+		return $result;
+	}
+
+	function download_image($image_url, $image_file){
+	    $fp = fopen ($image_file, 'w+');
+
+	    $ch = curl_init($image_url);
+	    curl_setopt($ch, CURLOPT_FILE, $fp);          
+	    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+	    curl_setopt($ch, CURLOPT_TIMEOUT, 1000);
+	    curl_setopt($ch, CURLOPT_USERAGENT, 'Mozilla/5.0');
+	    curl_exec($ch);
+
+	    curl_close($ch);
+	    fclose($fp);
 	}

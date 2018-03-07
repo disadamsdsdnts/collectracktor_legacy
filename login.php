@@ -39,7 +39,7 @@
 	<title>Inicio de sesión</title>
 </head>
 <body>
-	<?php include_once './navigator_index.php'; ?>
+	<?php include_once './navigator.php'; ?>
 
 	<div class="container cajon-blanco">
 		<?php 
@@ -50,8 +50,8 @@
 
 				echo "<div>";
 					echo "<form id='formLogin' method='POST' action='./login.php' onsubmit='return validarLogin(this);'>";
-						echo "<input type='text' name='login' placeholder='Login'>";
-						echo "<input type='password' name='password' placeholder='Password'>";
+						echo "<input type='text' name='login' placeholder='Login'><br>";
+						echo "<input type='password' name='password' placeholder='Password'><br>";
 						echo "<input type='submit' name='loginsubmit' value='Logueate'></input>";
 					echo "</form>";
 				echo "</div>";
@@ -64,5 +64,6 @@
 
 <?php
 	/* Cerramos conexión */
-	include './config/close_connection.php';
+	mysqli_close($databaseConnection);
+	unset($databaseConnection);
 ?>

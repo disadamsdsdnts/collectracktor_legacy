@@ -21,4 +21,17 @@
 	$usersColumnRol = 'Rol';
 
 	$userPreDefinedTable = '`userdefinedcollections`';
+	$userPreDefinedItemsTable = '`userfeineditem`';
+
+	/* Table collections */
+	$tableCollections = '`collections`';
+
+	/* Table item */
+	$tableItem = '`item`';
+
+	/* Table cans */
+	$tableCans = '`cans`';
+
+	/* Table movies */
+	$tableMovies = '`movies`';
 ?>
