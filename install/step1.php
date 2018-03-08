@@ -57,7 +57,7 @@
 					</div>
 					<div class="card-body">
 						<span class="text-justify font-italic">
-							Introducirá sus credenciales de administrador para crear la base de datos, las tablas y el usuario que manejará la información y conexión. Sus credenciales serán usadas y borradas una vez se haya completado el proceso. Se borrarán todos los datos.
+							Introducirá sus credenciales de administrador para crear la base de datos, las tablas y el usuario que manejará la información y conexión. Sus credenciales serán usadas y borradas una vez se haya completado el proceso. <span class="font-weight-bold" style="color: red;">Se borrarán todos los datos</span>.
 						</span>
 					</div>
 				</div>

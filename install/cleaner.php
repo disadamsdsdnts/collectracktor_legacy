@@ -1,7 +1,12 @@
 <?php
 	$cleaner = array(
-		"./instalar.php",
-		"./creation.php"
+		"./index.php",
+		"./step1.php",
+		"./step2create.php",
+		"./step2insert.php",
+		"./step3create.php",
+		"./step3insert.php",
+		"./pattern.php"
 	);
 
 	foreach ($cleaner as $file) {

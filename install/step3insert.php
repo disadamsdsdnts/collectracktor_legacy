@@ -50,16 +50,10 @@
 		$login = $_POST['installNombre'];
 		$password = $_POST['installPassword'];
 		$prefix = $_POST['installPrefix'];
-
-		$creatorLogin = $_POST['creatorLogin'];
-		$creatorPassword = $_POST['creatorPassword'];
 		
 		$adminLogin = $_POST['adminAccountLogin'];
 		$adminPass = $_POST['adminAccountPass'];
-		$adminFirstName = $_POST['adminAccountFirstName'];
-		$adminLastName = $_POST['adminAccountLastName'];
-		$adminEmail = $_POST['adminAccountEmail'];
-		$adminBirthday = $_POST['adminAccountBirthdate'];
+
 
 		/* Archivo donde estará las conexiones y variables de tablas */
 		$configFilePath = "../config/config.php";
@@ -170,52 +164,6 @@
 				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido escribir el archivo config.php. Deberá de comprobar los permisos de los archivos.</p>\";";
 			echo '</script>';
 		}
-
-		/* *-*-*-*-*-* Crear la base de datos *-*-*-*-*-* */
-		if(!$error && $continue){
-			/* Borramos la base de datos si existe */
-			$sql = "DROP DATABASE IF EXISTS `$database`";
-
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
-
-			/* Creamos la base de datos */
-			$sql = "CREATE DATABASE `$database`";
-
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
-
-			if(!$consulta){
-				$error = true;
-
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la base de datos. Asegurese de que la cuenta que nos ha proporcionado tiene permisos parar crearla.</p>\";";
-				echo '</script>';
-			} else {
-				$continue = true;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Database creada. ]</p>\";";
-				echo '</script>';
-			}
-		}
-
-		/* *-*-*-*-*-* Crear el usuario *-*-*-*-*-* */
-		if(!$error && $continue){
-			$sql = "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO '$login'@'$conexion' IDENTIFIED BY PASSWORD '$password'";
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
-
-			if(!$consulta){
-					$continue = false;
-
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear el usuario '$login'.</p>\";";
-					echo '</script>';
-				} else {
-					$continue = true;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Usuario creado. ]</p>\";";
-					echo '</script>';
-				}
-		}
-
 
 		/* *-*-*-*-*-* Crear las tablas *-*-*-*-*-* */
 		if(!$error && $continue){
