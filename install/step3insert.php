@@ -50,9 +50,6 @@
 		$login = $_POST['installNombre'];
 		$password = $_POST['installPassword'];
 		$prefix = $_POST['installPrefix'];
-		
-		$adminLogin = $_POST['adminAccountLogin'];
-		$adminPass = $_POST['adminAccountPass'];
 
 		/* Archivo donde estará las conexiones y variables de tablas */
 		$configFilePath = "../config/config.php";
