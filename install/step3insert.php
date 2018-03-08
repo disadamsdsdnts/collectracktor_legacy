@@ -167,7 +167,7 @@
 				"$tablaBooks", "$tablaCans", "$tablaCollections", "$tablaItem", "$tablaMovies", "$tablaMusic", "$tablaUserDefinedCollections", "$tablaUsers"
 			);
 
-			for($cleaner as $actual){
+			foreach($cleaner as $actual){
 				include '../config/config.php';
 
 				$sql = "DROP TABLE IF EXISTS `$actual`";
