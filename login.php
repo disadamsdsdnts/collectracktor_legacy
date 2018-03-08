@@ -11,7 +11,9 @@
 	$error = false;
 
 	/* Comprueba los datos enviados del formulario de inicio de sesión */
-	if(isset($_POST['loginsubmit'])){
+	if(isset($_SESSION['login'])){
+		header('Location:./index.php');
+	}else if(isset($_POST['loginsubmit'])){
 		$checkUserLogin = mysqli_real_escape_string($databaseConnection, $_POST['login']);
 		$checkUserPass = mysqli_real_escape_string($databaseConnection, $_POST['password']);
 
@@ -24,7 +26,7 @@
 
 			$_SESSION['login'] = $fila['Login'];
 			$_SESSION['rol'] = $fila['Rol'];
-			$_SESSION['activated'] = $fila['Activated'];
+			$_SESSION['activated'] = $fila["$userColumnActivatedAccount"];
 			$_SESSION['avatar'] = $fila['Avatar'];
 			$_SESSION['showName'] = $fila['First Name'];
 
@@ -43,23 +45,26 @@
 </head>
 <body>
 	<?php include_once './navigator.php'; ?>
+	<link rel="stylesheet" type="text/css" href="./js/login.js">
 
 	<br>
 
 	<div class="container cajon-blanco">
 		<?php 
 			if ($error){
-				echo "<div class='alert alert-danger'>";
-					echo "Los creedenciales para el inicio de sessión son incorrectos, vuelva a intentarlo.";
-				echo "</div>";
+				?>
+				<div class='alert alert-danger'>
+					Los creedenciales para el inicio de sessión son incorrectos, vuelva a intentarlo.
+				</div>
 
-				echo "<div>";
-					echo "<form id='formLogin' method='POST' action='./login.php' onsubmit='return validarLogin(this);'>";
-						echo "<input type='text' name='login' placeholder='Login'><br>";
-						echo "<input type='password' name='password' placeholder='Password'><br>";
-						echo "<input type='submit' name='loginsubmit' value='Logueate'></input>";
-					echo "</form>";
-				echo "</div>";
+				<div>
+					<form id='formLogin' method='POST' action='./login.php' onsubmit='return validarLogin(this);'>
+						<input type='text' name='login' placeholder='Login' class="input-group"><br>
+						<input type='password' name='password' placeholder='Password' class="input-group"><br>
+						<input type='submit' name='loginsubmit' value='Logueate' class="btn btn-secondary"></input>
+					</form>
+				</div>
+				<?php
 			}
 		?>
 	</div>

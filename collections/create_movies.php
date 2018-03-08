@@ -5,6 +5,8 @@
 
     areULogin();
 
+    isActivated();
+
     if(isset($_POST['submitButton'])){
         include '../config/config.php';
 

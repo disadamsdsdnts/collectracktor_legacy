@@ -6,6 +6,8 @@
 }
 .img-circle {
   border-radius: 50%;
+  max-height: 200px;
+  max-width: 200px;
 }
 .sombreado {
   -webkit-filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.5));

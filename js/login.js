@@ -2,8 +2,6 @@ function validarRegistro(form){
 	
 		var enviarFormulario = true;
 
-		console.log(form);
-
 		/* Comprobación del login */
 	    if(!(/^[a-z]*$/.test(form.login.value))){
 	        alert("El login no es correcto. No debe de estar vacio y en minúscula.");
@@ -19,18 +17,18 @@ function validarRegistro(form){
 	    }
 
 	    /* Comprobación del nombre */
-	    if(!(/^[A-Z]{1}[a-z]+(\s[A-Z]{1}[a-z]+)*$/.test(formulario.nombre.value)) || formulario.nombre.value == ""){
+	    if(!(/^[A-Z]{1}[a-z]+(\s[A-Z]{1}[a-z]+)*$/.test(formulario.firstName.value)) || formulario.nombre.value == ""){
 	        alert("El nombre no es correcto. No debe de estar vacio y cada nombre tiene que empezar por mayúscula.");
 	        enviarFormulario = false;
-	        form.nombre.focus();
+	        form.firstName.focus();
 	    }
 
 
 	    /* Comprobación de los apellidos */
-	    if(!(/^[A-Z]{1}[a-z]+(\s[A-Z]{1}[a-z]+)*$/.test(formulario.apellidos.value)) || formulario.apellidos.value == ""){
+	    if(!(/^[A-Z]{1}[a-z]+(\s[A-Z]{1}[a-z]+)*$/.test(formulario.lastName.value)) || formulario.apellidos.value == ""){
 	        alert("El apellido no es correcto. No debe de estar vacio y cada apellido tiene que empezar por mayúscula.");
 	        enviarFormulario = false;
-	        form.apellidos.focus();
+	        form.lastName.focus();
 	    }
 
 	    /* Comprobación del mail */
@@ -40,5 +38,17 @@ function validarRegistro(form){
 	        form.email.focus();
 	    }
 
-	    return enviarFormulario; /*enviarFormulario;*/
+	    return enviarFormulario;
 	}
+
+function validarLogin(form){
+	var enviarFormulario = true;
+
+	if(!(/^[a-z]*$/.test(form.login.value))){
+        alert("El login no es correcto. No debe de estar vacio y en minúscula.");
+        enviarFormulario = false;
+        form.login.focus();
+    }
+	    
+	return enviarFormulario;    
+}

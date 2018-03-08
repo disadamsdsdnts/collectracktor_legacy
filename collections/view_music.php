@@ -6,6 +6,8 @@
 
 	areULogin();
 
+	isActivated();
+
 	$actualLoginUser = $_SESSION['login'];
 
 	if(isset($_GET['id_collection'])){

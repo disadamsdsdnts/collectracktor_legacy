@@ -6,6 +6,8 @@
 
 	areULogin();
 
+	isActivated();
+
 	$actualLogin = $_SESSION['login'];
 
 	if(isset($_GET['default'])){

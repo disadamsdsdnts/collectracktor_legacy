@@ -17,11 +17,16 @@
 		$avatar = $dir_subida . $imageName;
 
 		/* Sube el fichero con su nombre temporal y luego lo mueve con el nuevo nombre de arriba */
-		move_uploaded_file($_FILES['updatingAvatar-img']['tmp_name'], $avatar);
+		move_uploaded_file($_FILES['updatingAvatar-img']['tmp_name'], ('../' . $avatar));
 
 		$query = "UPDATE $tableNameUsers SET Avatar='$avatar' WHERE Login='$usuarioActual'";
 
 		$datos = mysqli_query($databaseConnection, $query);
+
+		$consulta = "SELECT * FROM $tableNameUsers WHERE Login='$usuarioActual'";
+		$datos = mysqli_query($databaseConnection, $consulta);
+		$fila=mysqli_fetch_array($datos, MYSQLI_ASSOC);
+		$_SESSION['avatar'] = $fila['Avatar'];
 	}
 
 	if(isset($_POST['updatingNombre-submit'])){

@@ -4,6 +4,8 @@
     session_start();
 
     areULogin();
+
+    isActivated();
 ?>
 <!DOCTYPE html>
 <html>
@@ -16,11 +18,8 @@
 		include_once ('../navigator_inside.php');
 	?>
     <link rel="stylesheet" type="text/css" href="../css/collections_create.css">
-    <!--Development-->
-    <script>
-        document.write('<script src="../js/create_predefined.js?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');
-    </script>
-    <!--<script type="text/javascript" src="../js/create_predefined.js"></script>-->
+   
+    <script type="text/javascript" src="../js/create_predefined.js"></script>
 
     <div class="row">
     	<h1>

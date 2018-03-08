@@ -24,7 +24,7 @@
 
 		$actualLoginFromUser = $_POST['login'];
 
-		$sql = "SELECT * FROM `" . $tableNameUsers . "` WHERE $usersColumnLogin='$actualLoginFromUser'";
+		$sql = "SELECT * FROM $tableNameUsers WHERE $usersColumnLogin='$actualLoginFromUser'";
 
 		$query = mysqli_query($databaseConnection, $sql) or die(mysqli_error());
 
@@ -61,9 +61,9 @@
 				$addAvatar = "img/avatars/bear" . $random . ".png";
 			}
 
-			$sql = "INSERT INTO `" . $tableNameUsers . "` ($usersColumnLogin, $usersColumnPassword, $usersColumnFirstName, $usersColumnLastName, $usersColumnEmail, $usersColumnBirthDate, $usersColumnRol, $userColumnAvatar, $userColumnActivationCode) VALUES ('$addLogin', PASSWORD('$addPassword'), '$addFirstName', '$addLastName', '$addEmail', '$usersColumnBirthDate', '$addRol', '$addAvatar', '$code')";
+			$sql = "INSERT INTO $tableNameUsers ($usersColumnLogin, $usersColumnPassword, $usersColumnFirstName, $usersColumnLastName, $usersColumnEmail, $usersColumnBirthDate, $usersColumnRol, $userColumnAvatar, $userColumnActivationCode) VALUES ('$addLogin', PASSWORD('$addPassword'), '$addFirstName', '$addLastName', '$addEmail', '$usersColumnBirthDate', '$addRol', '$addAvatar', '$code')";
 
-			$query = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
+			$query = mysqli_query($databaseConnection, $sql);
 
 			if($query){
 				$registro_completado = true;
@@ -89,17 +89,19 @@
 <body>
 	<?php include_once './navigator.php'; ?>
 
+	<link rel="stylesheet" type="text/css" href="./js/login.js">
+
 	<?php
 		/* Mensajes de comprobación de que el registro ha sido completado o si hay algún fallo */
 		if($registro_completado){
 			echo "<div class='container'>";
-				echo "<div class='correcto'>";
+				echo "<div class='alert alert-success'>";
 					echo "El registro ha sido satisfactorio. Te redigiremos al inicio en 5 segundos.";
 				echo "</div>";
 			echo "</div>";
 		} else if (!$registro_completado && !$primera_vez){
 			echo "<div class='container'>";
-				echo "<div class='fallo'>";
+				echo "<div class='alert alert-danger'>";
 					echo "No se ha completado el registro. Algo ha fallado en la base de datos.";
 				echo "</div>";
 			echo "</div>";
@@ -108,7 +110,7 @@
 		/* Mensaje al usuario para comunicar que el login ya está registrado*/
 		if($login_ya_registrado){
 			echo "<div class='container'>";
-				echo "<div class='fallo'>";
+				echo "<div class='alert alert-danger'>";
 					echo "No se ha completado el registro. El login ya está siendo utilizado por otro usuario.";
 				echo "</div>";
 			echo "</div>";

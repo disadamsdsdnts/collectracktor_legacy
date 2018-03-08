@@ -6,6 +6,8 @@
 
 	areULogin();
 
+	isActivated();
+
 	$actualLoginUser = $_SESSION['login'];
 
 	if(isset($_GET['id_collection'])){
@@ -33,14 +35,9 @@
 	<?php 
 		include_once ('../navigator_inside.php');
 	?>
-	<!--Development: begin-->
-	<script>
-		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_index.css?dev=' + Math.floor(Math.random() * 100) + '">');
-		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_create.css?dev=' + Math.floor(Math.random() * 100) + '">');
-	</script>
-	<!--<link rel="stylesheet" type="text/css" href="../css/collections_index.css">-->
-	<!--<link rel="stylesheet" type="text/css" href="../css/collections_create.css">-->
-	<!--Development: end-->
+
+	<link rel="stylesheet" type="text/css" href="../css/collections_index.css">
+	<link rel="stylesheet" type="text/css" href="../css/collections_create.css">
 
 	<br>
 
