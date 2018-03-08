@@ -90,3 +90,9 @@
 			header('Location: ../index.php');
 		}
 	}
+
+	function isActivated(){
+		if ($_SESSION['activated'] == '1'){
+			header('Location: ../index.php');
+		}
+	}
