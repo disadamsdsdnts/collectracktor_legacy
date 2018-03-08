@@ -60,7 +60,7 @@
 						  <div class="input-group-prepend">
 						    <span class="input-group-text" id="installPassword">Contraseña de la base de datos</span>
 						  </div>
-						  <input form="formInstallWA" type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="installPassword" name="installPassword" required>
+						  <input form="formInstallWA" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="installPassword" name="installPassword" required>
 						</div>
 					</div>
 				</div>
@@ -180,7 +180,7 @@
 						  <div class="input-group-prepend">
 						    <span class="input-group-text" id="creatorPassword">Contraseña del usuario creador</span>
 						  </div>
-						  <input form="formInstallWA" type="text" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="creatorPassword" name="creatorPassword" required>
+						  <input form="formInstallWA" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="creatorPassword" name="creatorPassword" required>
 						</div>
 					</div>
 				</div>

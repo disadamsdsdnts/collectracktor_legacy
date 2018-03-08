@@ -176,12 +176,12 @@
 			/* Borramos la base de datos si existe */
 			$sql = "DROP DATABASE IF EXISTS `$database`";
 
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
+			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
 
 			/* Creamos la base de datos */
 			$sql = "CREATE DATABASE `$database`";
 
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
+			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
 
 			if(!$consulta){
 				$error = true;
@@ -199,8 +199,9 @@
 
 		/* *-*-*-*-*-* Crear el usuario *-*-*-*-*-* */
 		if(!$error && $continue){
-			$sql = "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO '$login'@'$conexion' IDENTIFIED BY PASSWORD '$password'";
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $createPassword), $sql);
+			$sql = "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO '$login'@'$conexion'";
+			$tempConnection = mysqli_connect($conexion, $creatorLogin, $creatorPassword);
+			$consulta = mysqli_query($tempConnection, $sql) or die (mysqli_error($tempConnection));
 
 			if(!$consulta){
 					$continue = false;
@@ -320,7 +321,7 @@
 				$adminAvatar = $dir_subida . $imageName;
 
 				/* Sube el fichero con su nombre temporal y luego lo mueve con el nuevo nombre de arriba */
-				move_uploaded_file($_FILES['adminAccountAvatar']['tmp_name'], $adminAvatar);
+				move_uploaded_file($_FILES['adminAccountAvatar']['tmp_name'], ('../' . $adminAvatar));
 			} else {
 				$random = rand(1,5);
 				$adminAvatar = "img/avatars/bear" . $random . ".png";
