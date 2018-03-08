@@ -96,7 +96,7 @@
 			'$databaseConnection = mysqli_connect($databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection);' . "\n\n" . 
 			'mysqli_set_charset($databaseConnection, ' . "'utf8'); \n\n" .
 			"/* Table users */\n" .
-			'$tableNameUsers =' . "'`$tablaUsers`';\n\n" .
+			'$tableNameUsers =' . "'$tablaUsers';\n\n" .
 			'$usersColumnLogin =' . "'Login';\n" .
 			'$usersColumnPassword =' . "'Password';\n" .
 			'$usersColumnFirstName =' . "'`First Name`';\n" .
@@ -109,11 +109,11 @@
 			'$userColumnActivatedAccount =' . "'`Activated Account`';\n\n" .
 			'$userPreDefinedTable =' . "'`$tablaUserDefinedCollections`';\n" .
 			"/* Table collections */\n" . 
-			'$tableCollections =' . "'`$tablaCollections`';\n\n" . 
+			'$tableCollections =' . "'$tablaCollections';\n\n" . 
 			"/* Table item */\n" . 
-			'$tableItem =' . "'`$tablaItem`';\n\n" .
+			'$tableItem =' . "'$tablaItem';\n\n" .
 			"/* Table cans */\n" . 
-			'$tableNameCans =' . "'`$tablaCans`';\n\n" . 
+			'$tableNameCans =' . "'$tablaCans';\n\n" . 
 			'$canBrand =' . "'Brand';\n" . 
 			'$canFlavor =' . "'Flavor';\n" . 
 			'$canQuantity =' . "'Quantity';\n" . 
@@ -122,9 +122,9 @@
 			'$canCountry =' . "'Country';\n" . 
 			'$canImage =' . "'Image';\n\n" . 
 			"/* Table movies */\n" . 
-			'$tableMovies =' . "'`$tablaMovies`';\n\n" . 
+			'$tableMovies =' . "'$tablaMovies';\n\n" . 
 			"/* Table music */\n" . 
-			'$tableMusic =' . "'`$tablaMusic`';\n" . 
+			'$tableMusic =' . "'$tablaMusic';\n" . 
 			'$musicArtist =' . "'Artist';\n" . 
 			'$musicTitle =' . "'Title';\n" . 
 			'$musicPublishDate =' . "'`Publish Date`';\n" . 
@@ -133,7 +133,7 @@
 			'$musicBarcode =' . "'Barcode';\n" . 
 			'$musicImage =' . "'Image';\n\n" . 
 			"/* Table books */\n" . 
-			'$tableNameBooks =' . "'`$tablaBooks`';\n\n" . 
+			'$tableNameBooks =' . "'$tablaBooks';\n\n" . 
 			'$bookTitle =' . "'Title';\n" . 
 			'$bookAuthor =' . "'Author';\n" . 
 			'$bookPublisher =' . "'Publisher';\n" . 
@@ -232,7 +232,7 @@
 			foreach ($alterTable as $peticion) {
 				include '../config/config.php';
 
-				$consulta = mysqli_query($databaseConnection, $peticion);
+				$consulta = mysqli_query($databaseConnection, $peticion) or die(mysqli_error($databaseConnection));
 
 				if(!$consulta){
 
