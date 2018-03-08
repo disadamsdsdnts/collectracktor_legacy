@@ -163,6 +163,20 @@
 
 		/* *-*-*-*-*-* Crear las tablas *-*-*-*-*-* */
 		if(!$error && $continue){
+			$cleaner = array(
+				"$tablaBooks", "$tablaCans", "$tablaCollections", "$tablaItem", "$tablaMovies", "$tablaMusic", "$tablaUserDefinedCollections", "$tablaUsers"
+			);
+
+			for($cleaner as $actual){
+				include '../config/config.php';
+
+				$sql = "DROP TABLE IF EXISTS `$actual`";
+				
+				$consulta = mysqli_query($databaseConnection, $sql);
+
+				include '../config/close_connection.php';
+			}
+
 			$createTable = array(
 				"CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
 				"CREATE TABLE $tablaCans (`Brand` varchar(255) DEFAULT NULL, `Flavor` varchar(255) DEFAULT NULL, `Quantity` int(5) DEFAULT NULL, `Year` year(4) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin añadir)', `Image` varchar(255) NOT NULL DEFAULT 'img/0_cans.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
@@ -175,14 +189,6 @@
 			);
 
 			foreach ($createTable as $peticion){
-				include '../config/config.php';
-
-				$sql = "DROP TABLE IF EXISTS `$peticion`";
-				
-				$consulta = mysqli_query($databaseConnection, $sql);
-
-				include '../config/close_connection.php';
-
 				include '../config/config.php';
 
 				$consulta = mysqli_query($databaseConnection, $peticion);
