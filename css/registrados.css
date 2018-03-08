@@ -1,0 +1,30 @@
+* {
+  -webkit-box-sizing: border-box /* Safari/Chrome, other WebKit */;
+  -moz-box-sizing: border-box /* Firefox, other Gecko */;
+  box-sizing: border-box /* Opera/IE 8+ */;
+}
+
+input{
+  margin-bottom: 1%;
+}
+
+div.correcto {
+  margin: 15px 0 15px 0;
+  color: #008000;
+  font-style: italic;
+  background-color: #a0ffa0;
+  border: 5px solid #060;
+  border-color: #008000;
+  border-radius: 15px;
+  padding: 1em 1em 1em 1em;
+}
+div.fallo {
+  margin: 15px 0 15px 0;
+  color: red;
+  font-style: italic;
+  background-color: #a0ffa0;
+  border: 5px solid red;
+  border-color: red;
+  border-radius: 15px;
+  padding: 1em 1em 1em 1em;
+}

@@ -1,0 +1,67 @@
+body {
+  background-image: url("../img/web/background.jpg") !important;
+  background-size: 113%;
+  background-repeat: repeat-y;
+  background-attachment: fixed;
+}
+.card-header {
+  background-color: #5c4a88;
+}
+.card-header a {
+  color: #fff78d !important;
+}
+.nav-link.active,
+.nav-link.otros {
+  background-color: #5c4a88 !important;
+}
+.nav-link.active.logo,
+.nav-link.otros.logo {
+  background-color: #c2b2ff !important;
+}
+.nav-link.active.otros {
+  background-color: #5c4a88 !important;
+}
+.nav-link.active.desconectar {
+  background-color: #f00 !important;
+}
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link,
+.dropdown-toggle,
+background-color tercero,
+.cuerpazo_serrano {
+  margin: 5px 5% 5% 5%;
+}
+a .links-campo {
+  color: #000 !important;
+}
+a:hover {
+  font-weight: bold !important;
+  text-decoration: none !important;
+}
+#menu-inicio {
+  min-width: 300px;
+}
+#menu-inicio input {
+  margin-left: 15px;
+  margin-top: 30px;
+  size: 15;
+}
+#registro-input input {
+/*display block*/
+  margin: 10px 10px 10px 10px;
+}
+#registro-input form {
+  text-align: center;
+}
+.img-circle {
+  border-radius: 50%;
+  max-width: 200px;
+}
+.sombreado {
+  -webkit-filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.5));
+  -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
+  filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
+}
+.form-hidden {
+  display: none;
+}

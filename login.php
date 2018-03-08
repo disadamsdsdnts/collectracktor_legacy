@@ -1,5 +1,6 @@
 <?php
 	/* Añadimos los datos de configuración de conexión */
+
 	include './config/config.php';
 	include './admin/functions.php';
 
@@ -14,9 +15,9 @@
 		$checkUserLogin = mysqli_real_escape_string($databaseConnection, $_POST['login']);
 		$checkUserPass = mysqli_real_escape_string($databaseConnection, $_POST['password']);
 
-		$consulta = "SELECT * FROM `" . $tableNameUsers . "` WHERE login='$checkUserLogin' AND password=PASSWORD('$checkUserPass')";
+		$consulta = "SELECT * FROM $tableNameUsers WHERE login='$checkUserLogin' AND password=PASSWORD('$checkUserPass')";
 
-		$datos = mysqli_query($databaseConnection, $consulta);
+		$datos = mysqli_query($databaseConnection, $consulta) or die(mysqli_error($databaseConnection));
 
 		if (mysqli_num_rows($datos) == 1){
 			$fila=mysqli_fetch_array($datos, MYSQLI_ASSOC);
@@ -24,6 +25,8 @@
 			$_SESSION['login'] = $fila['Login'];
 			$_SESSION['rol'] = $fila['Rol'];
 			$_SESSION['activated'] = $fila['Activated'];
+			$_SESSION['avatar'] = $fila['Avatar'];
+			$_SESSION['showName'] = $fila['First Name'];
 
 			header('Location: ./index.php');
 		}
@@ -40,6 +43,8 @@
 </head>
 <body>
 	<?php include_once './navigator.php'; ?>
+
+	<br>
 
 	<div class="container cajon-blanco">
 		<?php 

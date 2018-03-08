@@ -37,7 +37,7 @@
 
         $ID = mysqli_insert_id($databaseConnection);
 
-        $query = "INSERT INTO $tableMovies(Title, Year, Starring, Directed_by, Barcode, Format, Image, ItemID) VALUES('$itemName', '$itemYear', '$itemCast', '$itemDirector', '$itemBarcode', '$itemFormat', '$itemImage', LAST_INSERT_ID())";
+        $query = "INSERT INTO $tableMovies(Title, Year, Starring, Directed_by, Barcode, Format, Image, ItemID) VALUES('$itemName', '$itemYear', '$itemCast', '$itemDirector', '$itemBarcode', '$itemFormat', '$itemImage', '$ID')";
 
         $insert = mysqli_query($databaseConnection, $query);
 
@@ -91,11 +91,9 @@
 		include_once ('../navigator_inside.php');
 	?>
     <link rel="stylesheet" type="text/css" href="../css/collections_create.css">
-    <!-- DESARROLLO: inicio -->
-    <script type="text/javascript">
-        document.write('<script src="../js/add_movies.js?dev=' + Math.floor(Math.random() * 100) + '"\><\/script>');
-    </script>
-    <!-- DESARROLLO: fin -->
+    <link rel="stylesheet" type="text/css" href="../css/add.css">
+
+    <script type="text/javascript" src="../js/add_movies.js"></script>
 
     <br>
 
@@ -176,7 +174,7 @@
 
     <form method="POST" action="add_movies.php?id=<?php echo $actualCollection; ?>" id="formAdding" enctype="multipart/form-data">
         <div class="row float-right">
-            <input type="submit" name="addMovie" value="Crear colección" id="addMovie">
+            <input type="submit" name="addMovie" value="Crear colección" id="addMovie" class="btn btn-secondary">
         </div>
     </form>
 </body>

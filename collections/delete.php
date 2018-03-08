@@ -1,5 +1,6 @@
 <?php
     include_once '../admin/functions.php';
+    include '../config/config.php';
 
     session_start();
 
@@ -10,19 +11,27 @@
 	if(isset($_GET['default'])){
 		$collectionToDelete = $_GET['default'];
 
-		$query = "SELECT * FROM $tableCollections;"
+		$query = "SELECT * FROM $tableCollections WHERE ID='$collectionToDelete'";
 
 		$infoDB = mysqli_query($databaseConnection, $query);
 
 		$data = mysqli_fetch_assoc($infoDB);
 
 		if(($actualLogin == $data['UsersLogin']) && (mysqli_num_rows($infoDB) == 1)){
-			
+			$query = "DELETE FROM `collections` WHERE ID='$collectionToDelete'";
+
+			$deleting = mysqli_query($databaseConnection, $query);
+
+			if($deleting){
+				header('Location: ./admin_collections.php?delete=ok');
+			} else {
+				header('Location: ./admin_collections.php?delete=fail');
+			}
 		} else {
 			?>
 				<script type="text/javascript">
-					alert("No tienes permiso para hacer esto. Volviendo a la administración de tu cuenta..");
-					setTimeout(function(){<?php header('Location:./admin_collections.php'); ?>}, 500)
+					alert("No tienes permiso para hacer esto. Volviendo a la administración de tu cuenta...");
+					setTimeout(function(){<?php header('Location:./admin_collections.php?var=arriba'); ?>}, 500)
 				</script>
 			<?php
 		}
@@ -30,19 +39,35 @@
 	} else if(isset($_GET['predefined'])){
 		$collectionToDelete = $_GET['predefined'];
 
-		$query = "SELECT * FROM $userPreDefinedTable;"
+		$query = "SELECT * FROM $userPreDefinedTable WHERE ID='$collectionToDelete'";
 
 		$infoDB = mysqli_query($databaseConnection, $query);
 
 		$data = mysqli_fetch_assoc($infoDB);
 
 		if(($actualLogin == $data['UsersLogin']) && (mysqli_num_rows($infoDB) == 1)){
-			
+			$query = "SELECT User_TableID FROM $userPreDefinedTable WHERE ID='$collectionToDelete'";
+
+			$tableRealName = mysqli_query($databaseConnection, $query);
+
+			$deleting = '';
+
+			if($tableRealName){
+				$query = "DELETE FROM $userPreDefinedTable WHERE ID='$collectionToDelete'";
+
+				$deleting = mysqli_query($databaseConnection, $query);
+			}
+
+			if($tableRealName && $deleting){
+				header('Location: ./admin_collections.php?delete=ok');
+			} else {
+				header('Location: ./admin_collections.php?delete=fail');
+			}
 		} else {
 			?>
 				<script type="text/javascript">
-					alert("No tienes permiso para hacer esto. Volviendo a la administración de tu cuenta..");
-					setTimeout(function(){<?php header('Location:./admin_collections.php'); ?>}, 500)
+					alert("No tienes permiso para hacer esto. Volviendo a la administración de tu cuenta...");
+					/*setTimeout(function(){}, 500)*/
 				</script>
 			<?php
 		}
@@ -55,5 +80,5 @@
 
 	mysqli_close($databaseConnection);
 
-	header('Location: ./admin_collections.php');
+	//header('Location: ./admin_collections.php');
 ?>

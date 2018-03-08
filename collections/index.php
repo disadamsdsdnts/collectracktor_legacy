@@ -53,7 +53,7 @@
 				<thead class="thead-dark">
 					<tr class="text-center">
 						<th>
-							➕ Crear una nueva colección ➕
+							<a href="#" data-toggle="modal" data-target="#createCollectionModal">➕ Crear una nueva colección ➕</a>
 						</th>
 						<th>
 							<a href="./admin_collections.php">
@@ -66,45 +66,67 @@
 		</div>
 	</div>
 
-	<div class="row d-flex justify-content-around">
-		<a href="./create_music.php">
-			<button type="button" class="btn btn-secondary">
-				<span>➕ 🎵</span> Añadir una lista de música
-			</button>
-		</a>
+	<!-- Modal -->
+	<div class="modal fade" id="createCollectionModal" tabindex="-1" role="dialog" aria-labelledby="createCollection" aria-hidden="true">
+	  <div class="modal-dialog modal-dialog-centered" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLongTitle">Crear una colección</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body align-content-center">
+			<a href="./create_music.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ 🎵</span> Añadir una lista de música
+				</button>
+			</a>
 
-		<a href="./create_movies.php">
-			<button type="button" class="btn btn-secondary">
-				<span>➕ 🎬</span> Añadir una lista de películas
-			</button>
-		</a>
-	</div>
-	
-	<div class="row d-flex justify-content-around">
-		<a href="./create_books.php">
-			<button type="button" class="btn btn-secondary">
-				<span>➕ 📚</span> Añadir una coleccion de libros
-			</button>
-		</a>
-	</div>
+			<hr>
 
-	<div class="row d-flex justify-content-around">
-		<a href="./create_cans.php">
-			<button type="button" class="btn btn-secondary">
-				<span>➕ 🥫</span> Añadir una coleccion de latas
-			</button>
-		</a>
+			<a href="./create_movies.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ 🎬</span> Añadir una lista de películas
+				</button>
+			</a>
+			
+			<hr>
 
-		<a href="./create_predefined.php">
-			<button type="button" class="btn btn-secondary">
-				<span>➕ 📝</span> Añadir una nueva colección personalizada
-			</button>
-		</a>
+			<a href="./create_books.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ 📚</span> Añadir una coleccion de libros
+				</button>
+			</a>
+			
+			<hr>
+
+			<a href="./create_cans.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ 🥫</span> Añadir una coleccion de latas
+				</button>
+			</a>
+			
+			<hr>
+
+			<a href="./create_predefined.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ 📝</span> Añadir una nueva colección personalizada
+				</button>
+			</a>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
 
 	<br>
 
 	<?php
+		$contentExists = 0;
+
 		/* Listas de música */
 		openConnection();
 
@@ -161,10 +183,12 @@
 				</div>
 			</div>
 		<?php
+		} else {
+			$contentExists = $contentExists + 1;
 		}
 
 		/* Listas de latas */
-				openConnection();
+		openConnection();
 
 		$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser' AND Category='cans'";
 
@@ -219,7 +243,10 @@
 				</div>
 			</div>
 		<?php
+		} else {
+			$contentExists = $contentExists + 1;
 		}
+
 
 		/* Listas de libros */
 				openConnection();
@@ -277,7 +304,10 @@
 				</div>
 			</div>
 		<?php
+		} else {
+			$contentExists = $contentExists + 1;
 		}
+
 
 		/* Listas de películas */
 				openConnection();
@@ -335,7 +365,10 @@
 				</div>
 			</div>
 		<?php
+		} else {
+			$contentExists = $contentExists + 1;
 		}
+
 
 		/* Listas personalizadas */
 		openConnection();
@@ -393,6 +426,18 @@
 				</div>
 			</div>
 		<?php
+		} else {
+			$contentExists = $contentExists + 1;
+		}
+
+		if($contentExists == 5){
+			?>
+				<div class="row d-flex justify-content-between">
+					<div class="col-12 font-italic text-center">
+						(no hay colecciones disponibles para mostrar. Añada alguna para visualizarla aquí.)
+					</div>
+				</div>
+			<?php
 		}
 	?>
 </body>

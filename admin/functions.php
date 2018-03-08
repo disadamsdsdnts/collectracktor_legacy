@@ -84,3 +84,9 @@
 	    curl_close($ch);
 	    fclose($fp);
 	}
+	
+	function youDontBelongHere(){
+		if (!(isset($_SESSION['login'])) || ($_SESSION['rol'] != 'administrator')){
+			header('Location: ../index.php');
+		}
+	}

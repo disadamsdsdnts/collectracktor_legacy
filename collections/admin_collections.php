@@ -29,6 +29,34 @@
 
 	<br>
 
+	<div class="row d-flex justify-content-between">
+		<div class="col-12">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th colspan="4">
+							<h3 class="text-center">
+								📋 Administración de colecciones
+							</h3>
+						</th>
+					</tr>
+					<tr>
+						<th max-width="200px">
+							Imagen descriptiva
+						</th>
+						<th>
+							Nombre
+						</th>
+						<th>
+							Descripción
+						</th>
+						<th>
+							
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+
 	<?php
 	openConnection();
 
@@ -36,35 +64,10 @@
 
 	$data = mysqli_query($databaseConnection, $query);
 
+	$contentExists = 0;
+
 	if (mysqli_num_rows($data) > 0){
 	?>
-		<div class="row d-flex justify-content-between">
-			<div class="col-12">
-				<table class="table table-bordered table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th colspan="4">
-								<h5>
-									📋 Administración de colecciones
-								</h5>
-							</th>
-						</tr>
-						<tr>
-							<th max-width="200px">
-								Imagen descriptiva
-							</th>
-							<th>
-								Nombre
-							</th>
-							<th>
-								Descripción
-							</th>
-							<th>
-								
-							</th>
-						</tr>
-					</thead>
-					<tbody>
 						<?php
 							while($actualRow = mysqli_fetch_assoc($data)){
 								$actualID = $actualRow['ID'];
@@ -80,36 +83,45 @@
 											<?php echo $actualRow['Description']; ?>
 										</td>
 										<td class="align-middle text-center">
-											<button onclick="window.location='./delete.php?default=<?php echo $actualID;?>'">❌ Borrar</button>
+											<a href="./delete.php?default=<?php echo $actualID;?>">
+												<button>❌ Borrar</button>
+											</a>
 										</td>
 									</tr>
 								<?php
 							}
+						} else {
+									$contentExists = $contentExists + 1;
+						}
 
-							$query = "SELECT * FROM $userPreDefinedTable WHERE UsersLogin='$actualLoginUser'";
+						$query = "SELECT * FROM $userPreDefinedTable WHERE UsersLogin='$actualLoginUser'";
 
-							$userCollections = mysqli_query($databaseConnection, $query);
+						$userCollections = mysqli_query($databaseConnection, $query);
 
-							if (mysqli_num_rows($data) > 0){
-								while($actualRow = mysqli_fetch_assoc($userCollections)){
-									$actualID = $actualRow['ID'];
-									?>
-										<tr>
-											<td class="align-middle text-center">
-												<img src="<?php echo $actualRow['Image']; ?>" width="100px">
-											</td>
-											<td class="align-middle">
-												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
-											</td>
-											<td class="align-middle">
-												<?php echo $actualRow['Description']; ?>
-											</td>
-											<td class="align-middle text-center">
-												<button onclick="window.location='./delete.php?predefined=<?php echo $actualID;?>'">❌ Borrar</button>
-											</td>
-										</tr>
-									<?php
+						if (mysqli_num_rows($data) > 0){
+							while($actualRow = mysqli_fetch_assoc($userCollections)){
+								$actualID = $actualRow['ID'];
+								?>
+									<tr>
+										<td class="align-middle text-center">
+											<img src="<?php echo $actualRow['Image']; ?>" width="100px">
+										</td>
+										<td class="align-middle">
+											<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
+										</td>
+										<td class="align-middle">
+											<?php echo $actualRow['Description']; ?>
+										</td>
+										<td class="align-middle text-center">
+										<a href="./delete.php?predefined=<?php echo $actualID;?>">
+											<button>❌ Borrar</button>
+										</a>
+										</td>
+									</tr>
+								<?php
 								}
+							} else {
+									$contentExists = $contentExists + 1;
 							}
 						?>
 					</tbody>
@@ -117,4 +129,13 @@
 			</div>
 		</div>
 	<?php
+
+		if($contentExists == 2){
+		?>
+			<div class="row d-flex justify-content-between">
+				<div class="col-12 font-italic text-center">
+					(no hay colecciones disponibles para mostrar. Añada alguna para visualizarla aquí.)
+				</div>
+			</div>
+		<?php
 	}

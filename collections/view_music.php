@@ -33,14 +33,9 @@
 	<?php 
 		include_once ('../navigator_inside.php');
 	?>
-	<!--Development: begin-->
-	<script>
-		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_index.css?dev=' + Math.floor(Math.random() * 100) + '">');
-		document.write('<link rel="stylesheet" type="text/css" href="../css/collections_create.css?dev=' + Math.floor(Math.random() * 100) + '">');
-	</script>
-	<!--<link rel="stylesheet" type="text/css" href="../css/collections_index.css">-->
-	<!--<link rel="stylesheet" type="text/css" href="../css/collections_create.css">-->
-	<!--Development: end-->
+
+	<link rel="stylesheet" type="text/css" href="../css/collections_index.css">
+	<link rel="stylesheet" type="text/css" href="../css/collections_create.css">
 
 	<br>
 
@@ -54,7 +49,7 @@
 					<table class="table table-bordered table-hover">
 						<thead class="thead-dark">
 							<tr>
-								<th colspan="8">
+								<th colspan="7">
 									<h5>
 										📋 <?php echo $info['Name']; ?> 🎵
 									</h5>
@@ -62,8 +57,14 @@
 							</tr>
 
 							<tr>
-								<th colspan="8" class="font-italic">
+								<th colspan="6" class="font-italic">
 									<?php echo $info['Description']; ?>
+								</th>
+
+								<th>
+									<a href="./add_music.php?id=<?php echo $info['ID']; ?>">
+										<button>Añadir nuevo disco</button>
+									</a>
 								</th>
 							</tr>
 
@@ -79,9 +80,6 @@
 								</th>
 								<th>
 									Fecha de Publicación
-								</th>
-								<th>
-									Total de discos
 								</th>
 								<th>
 									Discográfica
@@ -114,7 +112,7 @@
 										?>
 											<tr>
 												<td class="align-middle">
-													<img src="<?php echo './' . $image; ?>" height="100px">
+													<img src="<?php echo './' . $image; ?>" style="max-height: 100px; max-width: 100px;"">
 												</td>
 												<td class="align-middle">
 													<?php echo '<strong>' . $actualRow['Artist'] . '</strong>'; ?>
@@ -123,10 +121,7 @@
 													<?php echo $actualRow['Title']; ?>
 												</td>
 												<td class="align-middle">
-													<?php echo $actualRow['Publish date']; ?>
-												</td>
-												<td class="align-middle">
-													<?php echo $actualRow['Total discs']; ?>
+													<?php echo $actualRow['Publish Date']; ?>
 												</td>
 												<td class="align-middle">
 													<?php echo $actualRow['Record Company']; ?>

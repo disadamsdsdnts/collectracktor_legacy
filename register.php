@@ -1,5 +1,4 @@
 <?php
-	include './admin/functions.php';
 	include './config/config.php';
 
 	session_start();
@@ -23,8 +22,6 @@
 	} else if(isset($_POST['submit'])){
 		$primera_vez = false;
 
-		openConnection();
-
 		$actualLoginFromUser = $_POST['login'];
 
 		$sql = "SELECT * FROM `" . $tableNameUsers . "` WHERE $usersColumnLogin='$actualLoginFromUser'";
@@ -39,11 +36,32 @@
 			$addFirstName = $_POST['firstName'];
 			$addLastName = $_POST['lastName'];
 			$addEmail = $_POST['email'];
-			$addBirthDate = $_POST['birthdate'];
-			var_dump($addBirthDate);
+			$addBirthDate = date("Y-m-d", strtotime($_POST['birthdate']));
 			$addRol = 'registered';
 
-			$sql = "INSERT INTO `" . $tableNameUsers . "` ($usersColumnLogin, $usersColumnPassword, $usersColumnFirstName, $usersColumnLastName, $usersColumnEmail, $usersColumnBirthDate, $usersColumnRol) VALUES ('$addLogin', PASSWORD('$addPassword'), '$addFirstName', '$addLastName', '$addEmail', '$usersColumnBirthDate', '$addRol')";
+			$code = rand(1000, 9999);
+
+			$addAvatar = "";
+
+			if(is_uploaded_file($_FILES['fileToUpload']['name'])){
+				/* Declaración de variables del directorio de subida y de la ruta inicial donde se va a subir */
+				$dir_subida = 'img/avatars/';
+				$fichero_subido = $dir_subida . basename($_FILES['fileToUpload']['name']);
+
+				/* Le pone el nombre nuevo que será: id.extensión */
+				$imageName = $login . "." . pathinfo($_FILES['fileToUpload']['name'], PATHINFO_EXTENSION);
+				
+				/* Composición de la ruta final */
+				$addAvatar = $dir_subida . $imageName;
+
+				/* Sube el fichero con su nombre temporal y luego lo mueve con el nuevo nombre de arriba */
+				move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $addAvatar);
+			} else {
+				$random = rand(1,5);
+				$addAvatar = "img/avatars/bear" . $random . ".png";
+			}
+
+			$sql = "INSERT INTO `" . $tableNameUsers . "` ($usersColumnLogin, $usersColumnPassword, $usersColumnFirstName, $usersColumnLastName, $usersColumnEmail, $usersColumnBirthDate, $usersColumnRol, $userColumnAvatar, $userColumnActivationCode) VALUES ('$addLogin', PASSWORD('$addPassword'), '$addFirstName', '$addLastName', '$addEmail', '$usersColumnBirthDate', '$addRol', '$addAvatar', '$code')";
 
 			$query = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
@@ -64,8 +82,7 @@
 	<script type="text/javascript" src="./js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="./js/registros.js"></script>
 
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="./css/registrados.css">
+	<link rel="stylesheet" href="./css/bootstrap.min.css">
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
@@ -98,51 +115,57 @@
 		}
 	?>
 
-	<div class="container">
+	<br>
 
+	<div class="container">
 		<div class="row">
 			<div class="col-12">
-				<form action="" method="POST" onsubmit="return validarRegistro(this);">
-					<div class="cajon-blanco">
-						<div class="cajon-blanco-noshadow">
-							<span class="d-flex justify-content-center" style="color: black;">
+				<form action="" method="POST" onsubmit="return validarRegistro(this);" id="registerForm" enctype="multipart/form-data">
+					<div class="container">
+						<div >
+							<h5 class="d-flex justify-content-center" style="color: black;">
 								Datos de la cuenta
-							</span>
+							</h5>
 
 							<div class="row d-flex justify-content-center">
-								<input type="text" name="login" id="login" placeholder="Login">
+								<input class="form-control"  type="text" name="login" id="login" placeholder="Login">
 							</div>
 
 							<div class="row d-flex justify-content-center">
-								<input type="password" name="password" id="password" placeholder="Contraseña">
+								<input class="form-control"  type="password" name="password" id="password" placeholder="Contraseña">
 							</div>
 						</div>
 
-						<div class="cajon-blanco-noshadow">
-							<span class="d-flex justify-content-center" style="color: black;">
+						<hr>
+
+						<div>
+							<h5 class="d-flex justify-content-center" style="color: black;">
 								Datos del usuario
-							</span>
+							</h5>
 
 							<div class="row d-flex justify-content-center">
-								<input type="text" name="firstName" placeholder="Nombre real">
+								<input class="form-control" type="text" name="firstName" placeholder="Nombre real">
+
+								<input class="form-control" type="text" name="lastName" placeholder="Apellidos reales">
+
+								<input class="form-control" type="text" name="email" id="email" placeholder="Correo electrónico">
+
+								<input class="form-control" type="date" name="birthdate" placeholder="Fecha de nacimiento">
 							</div>
 
-							<div class="row d-flex justify-content-center">
-								<input type="text" name="lastName" placeholder="Apellidos reales">
-							</div>
+							<hr>
 
 							<div class="row d-flex justify-content-center">
-								<input type="text" name="email" id="email" placeholder="Correo electrónico">
-							</div>
-
-							<div class="row d-flex justify-content-center">
-								<input type="date" name="birthdate" placeholder="Fecha de nacimiento">
+								<label for="avatar" class="text-center"><h5>Tu avatar</h5></label><br>
+								<input form="registerForm" class="form-control" type="file" name="fileToUpload" id="fileToUpload" placeholder="Tu avatar"><br/>
 							</div>
 						</div>
 
-						<div class="cajon-blanco-noshadow">
+						<hr>
+						
+						<div>
 							<div class="row d-flex justify-content-center">
-								<input type="submit" name="submit" value="Crear usuario">							
+								<input type="submit" name="submit" value="Crear usuario" class="btn btn-secondary">						
 							</div>
 						</div>
 					</div>
@@ -182,6 +205,7 @@
 
 	if(isset($_POST['submit'])){
 		/* Cerramos conexión */
-		closeConnection();
+		mysqli_close($databaseConnection);
+		unset($databaseConnection);
 	}
 ?>

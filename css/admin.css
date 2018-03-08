@@ -1,0 +1,21 @@
+#caridad {
+  margin: 0 5% 0 5%;
+}
+.mini-avatar {
+  max-width: 50px;
+}
+.img-circle {
+  border-radius: 50%;
+}
+.sombreado {
+  -webkit-filter: drop-shadow(3px 3px 8px rgba(0,0,0,0.5));
+  -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
+  filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=2, OffY=2, Color='#444')";
+}
+tr td {
+  vertical-align: middle !important;
+}
+tr .containsButtom,
+tr .containsInfo {
+  text-align: center !important;
+}

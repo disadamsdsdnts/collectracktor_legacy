@@ -54,10 +54,15 @@
 					<table class="table table-bordered table-hover">
 						<thead class="thead-dark">
 							<tr>
-								<th colspan="6">
+								<th colspan="5">
 									<h5>
 										📋 <?php echo $info['Name']; ?> 📚
 									</h5>
+								</th>
+								<th>
+									<a href="./add_books.php?id=<?php echo $info['ID']; ?>">
+										<button>Añadir nuevo libro</button>
+									</a>
 								</th>
 							</tr>
 
@@ -84,7 +89,7 @@
 									Editorial
 								</th>
 								<th>
-									IBAN
+									ISBN
 								</th>
 							</tr>
 						</thead>

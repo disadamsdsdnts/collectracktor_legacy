@@ -1,37 +1,67 @@
-<?php
+<?php 
+/* Datos de conexion */ 
+$databaseHostConnection='localhost'; 
+$databaseUserConnection='caracola'; 
+$databasePasswordConnection='caracola'; 
+$databaseNameConnection='caracola'; 
 
-	$databaseHostConnection = 'localhost';
-	$databaseUserConnection = 'proyectoFinal';
-	$databasePasswordConnection = 'unacoleccionparadominarlosatodos';
-	$databaseNameConnection = 'proyectofinal';
+$databaseConnection = mysqli_connect($databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection);
 
-	$databaseConnection = mysqli_connect($databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection);
+mysqli_set_charset($databaseConnection, 'utf8'); 
 
-	mysqli_set_charset($databaseConnection, 'utf8');
+/* Table users */
+$tableNameUsers ='`cal_users`';
 
-	/* Table users */
-	$tableNameUsers = 'users';
+$usersColumnLogin ='Login';
+$usersColumnPassword ='Password';
+$usersColumnFirstName ='`First Name`';
+$usersColumnLastName ='`Last Name`';
+$usersColumnEmail ='Email';
+$usersColumnBirthDate ='`Birth Date`';
+$usersColumnRol ='Rol';
+$userColumnAvatar ='Avatar';
+$userColumnActivationCode ='`Activation Code`';
+$userColumnActivatedAccount ='`Activated Account`';
 
-	$usersColumnLogin = 'Login';
-	$usersColumnPassword = 'Password';
-	$usersColumnFirstName = '`First Name`';
-	$usersColumnLastName = '`Last Name`';
-	$usersColumnEmail = 'Email';
-	$usersColumnBirthDate = '`Birth Date`';
-	$usersColumnRol = 'Rol';
+$userPreDefinedTable ='`cal_userdefinedcollections`';
+/* Table collections */
+$tableCollections ='`cal_collections`';
 
-	$userPreDefinedTable = '`userdefinedcollections`';
-	$userPreDefinedItemsTable = '`userfeineditem`';
+/* Table item */
+$tableItem ='`cal_item`';
 
-	/* Table collections */
-	$tableCollections = '`collections`';
+/* Table cans */
+$tableNameCans ='`cal_cans`';
 
-	/* Table item */
-	$tableItem = '`item`';
+$canBrand ='Brand';
+$canFlavor ='Flavor';
+$canQuantity ='Quantity';
+$canYear ='Year';
+$canBarcode ='Barcode';
+$canCountry ='Country';
+$canImage ='Image';
 
-	/* Table cans */
-	$tableCans = '`cans`';
+/* Table movies */
+$tableMovies ='`cal_movies`';
 
-	/* Table movies */
-	$tableMovies = '`movies`';
+/* Table music */
+$tableMusic ='`cal_music`';
+$musicArtist ='Artist';
+$musicTitle ='Title';
+$musicPublishDate ='`Publish Date`';
+$musicRecordCompany ='`Record Company`';
+$musicType ='Type';
+$musicBarcode ='Barcode';
+$musicImage ='Image';
+
+/* Table books */
+$tableNameBooks ='`cal_books`';
+
+$bookTitle ='Title';
+$bookAuthor ='Author';
+$bookPublisher ='Publisher';
+$bookPublishDate ='`Publish date`';
+$bookISBN ='ISBN';
+$bookImage ='Image'; 
+
 ?>

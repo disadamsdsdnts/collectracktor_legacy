@@ -56,14 +56,19 @@
 							<tr>
 								<th colspan="7">
 									<h5>
-										📋 <?php echo $info['Name']; ?> 🎵
+										📋 <?php echo $info['Name']; ?> 🥫
 									</h5>
 								</th>
 							</tr>
 
 							<tr>
-								<th colspan="7" class="font-italic">
+								<th colspan="6" class="font-italic">
 									<?php echo $info['Description']; ?>
+								</th>
+								<th>
+									<a href="./add_cans.php?id=<?php echo $info['ID']; ?>">
+										<button>Añadir nueva lata</button>
+									</a>
 								</th>
 							</tr>
 
