@@ -162,7 +162,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="text-right">
-					<form method="POST" action="./step3create.php" id="formInstallWA" enctype="multipart/form-data">
+					<form method="POST" action="./step3insert.php" id="formInstallWA" enctype="multipart/form-data">
 						<input type="submit" name="installSubmit" class="btn btn-secondary" value="Finalizar instalación">
 					</form>
 				</div>
