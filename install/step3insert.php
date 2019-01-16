@@ -90,9 +90,9 @@
 			"<?php \n" . 
 			"/* Datos de conexion */ \n" . 
 			'$databaseHostConnection=' . "'$conexion'; \n" . 
-			'$databaseUserConnection=' . "'$database'; \n" . 
-			'$databasePasswordConnection=' . "'$login'; \n" . 
-			'$databaseNameConnection=' . "'$password'; \n\n" . 
+			'$databaseUserConnection=' . "'$login'; \n" . 
+			'$databasePasswordConnection=' . "'$password'; \n" . 
+			'$databaseNameConnection=' . "'$database'; \n\n" . 
 			'$databaseConnection = mysqli_connect($databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection);' . "\n\n" . 
 			'mysqli_set_charset($databaseConnection, ' . "'utf8'); \n\n" .
 			"/* Table users */\n" .
