@@ -2,10 +2,10 @@
 	$cleaner = array(
 		"./index.php",
 		"./step1.php",
-		"./step2create.php",
-		"./step2insert.php",
-		"./step3create.php",
-		"./step3insert.php",
+		"./create/step2.php",
+		"./insert/step2.php",
+		"./create/step3.php",
+		"./insert/step3.php",
 		"./pattern.php"
 	);
 

@@ -35,7 +35,7 @@
 
 		<div class="row">
 			<div class="col-6">
-				<a href="./step2insert.php" style="text-decoration: none;">
+				<a href="./insert/step2.php" style="text-decoration: none;">
 				<div class="card">
 					<div class="card-header bg-dark text-white">
 						<strong>Tengo una base de datos y quiero crear las tablas dentro.</strong>
@@ -50,7 +50,7 @@
 			</div>
 
 			<div class="col-6">
-				<a href="./step2create.php" style="text-decoration: none;">
+				<a href="./create/step2.php" style="text-decoration: none;">
 				<div class="card">
 					<div class="card-header bg-dark text-white">
 						<strong>No tengo una base de datos, pero tengo permisos para poder crearla.</strong>

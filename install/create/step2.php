@@ -160,9 +160,39 @@
 		<br>
 
 		<div class="row">
+			<div class="col-6">
+				<div class="card">
+					<div class="card-header text-white bg-dark">
+						<strong>
+							Datos de conexión a la base de datos
+						</strong>
+					</div>
+
+					<div class="card-body form-group">
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="creatorLogin">Usuario con permisos de creación</span>
+						  </div>
+						  <input form="formInstallWA" type="text" class="form-control" placeholder="Usuario" aria-label="Usuario" aria-describedby="creatorLogin" name="creatorLogin" required>
+						</div>
+
+						<div class="input-group mb-3">
+						  <div class="input-group-prepend">
+						    <span class="input-group-text" id="creatorPassword">Contraseña del usuario creador</span>
+						  </div>
+						  <input form="formInstallWA" type="password" class="form-control" placeholder="Password" aria-label="Password" aria-describedby="creatorPassword" name="creatorPassword" required>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row">
 			<div class="col-12">
 				<div class="text-right">
-					<form method="POST" action="./step3insert.php" id="formInstallWA" enctype="multipart/form-data">
+					<form method="POST" action="./create/step3.php" id="formInstallWA" enctype="multipart/form-data">
 						<input type="submit" name="installSubmit" class="btn btn-secondary" value="Finalizar instalación">
 					</form>
 				</div>
