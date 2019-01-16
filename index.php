@@ -3,7 +3,11 @@
 
     session_start();
 
-    include_once './config/config.php';
+	if(!file_exists('./config/config.php')){
+		header('Location: ./install/index.php');
+	} else {
+		include_once './config/config.php';
+	}
 ?>
 
 <!DOCTYPE html>
