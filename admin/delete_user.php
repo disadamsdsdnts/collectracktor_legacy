@@ -1,6 +1,5 @@
 <?php
-	
-	include_once '../config/config.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
 	if (isset($_GET['login'])){
 		$login = $_GET['login'];

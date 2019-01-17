@@ -1,5 +1,5 @@
 <?php
-	include_once (SERVER_PATH . 'config/functions.php');
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -8,16 +8,16 @@
 </head>
 <body>
 	<meta charset="utf-8">
-	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/jquery-3.2.1.slim.min.js"></script>
-	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/popper.min.js"></script>
-	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="<?php echo SERVER_PATH; ?>css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="<?php echo SERVER_PATH; ?>css/general.css">
-	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/instalar.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/popper.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/general.css">
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/instalar.js"></script>
 
 	<nav id="navigation-bar" class="navbar navbar-dark bg-dark">
-	  <a class="navbar-brand" href="../index.php">Colec-track-tor</a>
+	  <a class="navbar-brand" href="<?= DOMAIN_PATH; ?>index.php">Colec-track-tor</a>
 	</nav>
 
 	<br>
@@ -194,7 +194,7 @@
 		<div class="row">
 			<div class="col-12">
 				<div class="text-right">
-					<form method="POST" action="./create/step3.php" id="formInstallWA" enctype="multipart/form-data">
+					<form method="POST" action="step3.php" id="formInstallWA" enctype="multipart/form-data">
 						<input type="submit" name="installSubmit" class="btn btn-secondary" value="Finalizar instalación">
 					</form>
 				</div>

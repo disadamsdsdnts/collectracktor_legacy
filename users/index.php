@@ -1,9 +1,7 @@
 <?php
-    include_once '../admin/functions.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
-
-    include_once '../config/config.php';
 ?>
 
 <!DOCTYPE html>

@@ -1,5 +1,5 @@
 <?php
-    include_once '../admin/functions.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
 
@@ -12,8 +12,6 @@
     if(!isset($_GET['id'])){
         header('Location:./index.php');
     } 
-
-    include '../config/config.php';
 
     $actualCollection = $_GET['id'];
 

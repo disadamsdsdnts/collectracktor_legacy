@@ -1,15 +1,9 @@
 <?php
-	define('SERVER_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
+	define('DOMAIN_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
 	
-    include_once './admin/functions.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
-
-	if(!file_exists('./config/config.php')){
-		header('Location: ./install/index.php');
-	} else {
-		include_once './config/config.php';
-	}
 ?>
 
 <!DOCTYPE html>

@@ -1,5 +1,5 @@
 <?php
-	include_once './admin/functions.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 ?>
 <meta charset="utf-8">
 <script type="text/javascript" src="./js/jquery-3.2.1.slim.min.js"></script>

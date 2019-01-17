@@ -1,7 +1,7 @@
 <?php
 	session_start();
 
-	include_once "../config/config.php";
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 	
 	$usuarioActual = $_SESSION['login'];
 

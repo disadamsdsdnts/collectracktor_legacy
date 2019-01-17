@@ -2,7 +2,7 @@
 	session_start();
 	$alerta_desconocido = false;
 
-	include_once './config/config.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
 	if ($_SESSION['activated'] == '1'){
 		header('Location: ./index.php');

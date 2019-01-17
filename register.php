@@ -1,5 +1,5 @@
 <?php
-	include './config/config.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
 	session_start();
 
