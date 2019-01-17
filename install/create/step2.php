@@ -1,18 +1,20 @@
+<?php
+	include_once (SERVER_PATH . 'config/functions.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Colec-track-tor</title>
 </head>
 <body>
-
 	<meta charset="utf-8">
-	<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js"></script>
-	<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="../js/popper.min.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/general.css">
-	<script type="text/javascript" src="../js/instalar.js"></script>
+	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/popper.min.js"></script>
+	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?php echo SERVER_PATH; ?>css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<?php echo SERVER_PATH; ?>css/general.css">
+	<script type="text/javascript" src="<?php echo SERVER_PATH; ?>js/instalar.js"></script>
 
 	<nav id="navigation-bar" class="navbar navbar-dark bg-dark">
 	  <a class="navbar-brand" href="../index.php">Colec-track-tor</a>

@@ -1,4 +1,6 @@
 <?php
+	define('SERVER_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
+	
     include_once './admin/functions.php';
 
     session_start();

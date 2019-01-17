@@ -9,11 +9,11 @@
 		"./pattern.php"
 	);
 
-	foreach ($cleaner as $file) {
-		if(file_exists($file)){
-			unlink($file);
-		}
-	}
+	// foreach ($cleaner as $file) {
+	// 	if(file_exists($file)){
+	// 		unlink($file);
+	// 	}
+	// }
 
 	header('Location: ../index.php');
 
