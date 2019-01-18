@@ -3,7 +3,13 @@
     if(file_exists(DOCUMENT_ROOT . 'config/config.php')){
         include_once (DOCUMENT_ROOT . 'config/config.php');
     } else {
-        header('Location: ' . DOMAIN_PATH . 'install/index.php');
+        session_start();
+
+        if(isset($_SESSION['installed'])){
+            $_SESSION['installed'] = 'no';
+
+            header('Location: ' . DOMAIN_PATH . 'install/index.php');
+        }
     }
 
     /* FUNCIONES GENERALES DE CONEXIÓN */
