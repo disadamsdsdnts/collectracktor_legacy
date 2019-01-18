@@ -8,17 +8,15 @@
 <html>
 <head>
 	<title>Colec-track-tor</title>
+
+	<link rel="stylesheet" type="text/css" href="../css/global.css">
+	<script type="text/javascript" src="../js/updateAccount.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/account.css">
 </head>
 <body>
 	<?php 
         include_once '../navigator_inside.php';
 	?>
-
-	<link rel="stylesheet" type="text/css" href="../css/global.css">
-	<script type="text/javascript" src="../js/updateAccount.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/account.css">
-
-	<br>
 
 	<div class="container">
 		<div class="row d-flex justify-content-between">
