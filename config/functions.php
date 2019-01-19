@@ -1,7 +1,7 @@
 <?php 
     /* CONFIGURACIÓN BÁSICA SOBRE EL DOMINIO EL DOCUMENTROOT */
-    define('DOMAIN_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
-    define('DOCUMENT_ROOT', ($_SERVER['DOCUMENT_ROOT'] . '/'));
+    if(!defined('DOMAIN_PATH')) define('DOMAIN_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
+    if(!defined('DOCUMENT_ROOT')) define('DOCUMENT_ROOT', ($_SERVER['DOCUMENT_ROOT'] . '/'));
 
     /* Funciones para el manejo de conexiones */
     include_once('functions/connections.php');
