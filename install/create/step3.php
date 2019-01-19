@@ -50,7 +50,7 @@
 		/* Asignamos las variables que llegan a nombres más ordenados */
 		$conexion = $_POST['installConnection'];
 		$database = $_POST['installDatabase'];
-		$login = $_POST['installNombre'];
+		$user = $_POST['installNombre'];
 		$password = $_POST['installPassword'];
 		$prefix = $_POST['installPrefix'];
 
@@ -65,7 +65,7 @@
 		$adminBirthday = $_POST['adminAccountBirthdate'];
 
 		/* Archivo donde estará las conexiones y variables de tablas */
-		$configFilePath = DOMAIN_PATH . "config/config.php";
+		$configFilePath = DOCUMENT_ROOT . "config/config.php";
 
 		/* Inicializando las variables de tablas */
 		$tablaBooks = 'books';
@@ -179,12 +179,12 @@
 			/* Borramos la base de datos si existe */
 			$sql = "DROP DATABASE IF EXISTS `$database`";
 
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
+			$consulta = mysqli_query(mysqli_connect("$conexion", "$creatorLogin", "$creatorPassword"), $sql);
 
 			/* Creamos la base de datos */
 			$sql = "CREATE DATABASE `$database`";
 
-			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
+			$consulta = mysqli_query(mysqli_connect("$conexion", "$creatorLogin", "$creatorPassword"), $sql);
 
 			if(!$consulta){
 				$error = true;
@@ -202,15 +202,34 @@
 
 		/* *-*-*-*-*-* Crear el usuario *-*-*-*-*-* */
 		if(!$error && $continue){
-			$sql = "GRANT SELECT, INSERT, UPDATE, DELETE, CREATE, DROP, FILE, INDEX, ALTER, CREATE TEMPORARY TABLES, EXECUTE, CREATE VIEW, SHOW VIEW, CREATE ROUTINE, ALTER ROUTINE, EVENT, TRIGGER ON *.* TO '$login'@'$conexion'";
+			/* Borrar el user si existía */
+			$sql = "DELETE FROM mysql.user WHERE user = '$user'";
 			$tempConnection = mysqli_connect($conexion, $creatorLogin, $creatorPassword);
 			$consulta = mysqli_query($tempConnection, $sql) or die (mysqli_error($tempConnection));
+
+			if(!$consulta){
+				$continue = false;
+
+				echo '<script type="text/javascript">';
+					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido borrar el usuario '$user'.</p>\";";
+				echo '</script>';
+			} else {
+				$continue = true;
+				echo '<script type="text/javascript">';
+					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ El usuario existía, por lo que se ha borrado para crear la cuenta de forma correcta. ]</p>\";";
+				echo '</script>';
+			}
+
+			/* Crear el usuario con la info correcto */
+			$sql = "GRANT ALL ON `$database`.* TO $user@'$conexion' IDENTIFIED BY '$password'";
+			$tempConnection = mysqli_connect($conexion, $creatorLogin, $creatorPassword);
+			$consulta = mysqli_query($tempConnection, $sql) or die (mysqli_error($consulta));
 
 			if(!$consulta){
 					$continue = false;
 
 					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear el usuario '$login'.</p>\";";
+						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear el usuario '$user'.</p>\";";
 					echo '</script>';
 				} else {
 					$continue = true;
@@ -318,7 +337,7 @@
 				$fichero_subido = $dir_subida . basename($_FILES['adminAccountAvatar']['name']);
 
 				/* Le pone el nombre nuevo que será: id.extensión */
-				$imageName = $login . "." . pathinfo($_FILES['adminAccountAvatar']['name'], PATHINFO_EXTENSION);
+				$imageName = $user . "." . pathinfo($_FILES['adminAccountAvatar']['name'], PATHINFO_EXTENSION);
 				
 				/* Composición de la ruta final */
 				$adminAvatar = $dir_subida . $imageName;
@@ -354,11 +373,11 @@
 			echo '<script type="text/javascript">';
 				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ <strong>Instalación finalizada.</strong> Le redirigimos a la web en 5 segundos... ]</p>\";";
 
-				echo "$(document).ready(function() {";
-					echo "setTimeout(function(){";
-					echo "window.location.replace('" . DOMAIN_PATH . "cleaner.php');";
-					echo "}, 5000)";
-				echo "});";
+				// echo "$(document).ready(function() {";
+				// 	echo "setTimeout(function(){";
+				// 	echo "window.location.replace('" . DOMAIN_PATH . "cleaner.php');";
+				// 	echo "}, 5000)";
+				// echo "});";
 			echo "</script>";
 		}
 	}
