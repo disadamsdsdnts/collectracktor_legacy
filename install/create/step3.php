@@ -1,3 +1,6 @@
+<?php
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -6,15 +9,15 @@
 <body>
 
 	<meta charset="utf-8">
-	<script type="text/javascript" src="../js/jquery-3.2.1.slim.min.js"></script>
-	<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
-	<script type="text/javascript" src="../js/popper.min.js"></script>
-	<script type="text/javascript" src="../js/bootstrap.min.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
-	<link rel="stylesheet" type="text/css" href="../css/general.css">
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/popper.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/bootstrap.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/general.css">
 
 	<nav id="navigation-bar" class="navbar navbar-dark bg-dark">
-	  <a class="navbar-brand" href="../index.php">Colec-track-tor</a>
+	  <a class="navbar-brand" href="<?= DOMAIN_PATH; ?>index.php">Colec-track-tor</a>
 	</nav>
 
 	<br><hr><br>
@@ -62,7 +65,7 @@
 		$adminBirthday = $_POST['adminAccountBirthdate'];
 
 		/* Archivo donde estará las conexiones y variables de tablas */
-		$configFilePath = "../config/config.php";
+		$configFilePath = DOMAIN_PATH . "config/config.php";
 
 		/* Inicializando las variables de tablas */
 		$tablaBooks = 'books';
@@ -232,15 +235,15 @@
 			);
 
 			foreach ($createTable as $peticion){
-				include '../config/config.php';
+				include_once (DOCUMENT_ROOT .'config/config.php');
 
 				$sql = "DROP TABLE IF EXISTS `$peticion`";
 				
 				$consulta = mysqli_query($databaseConnection, $sql);
 
-				include '../config/close_connection.php';
+				closeConnection();
 
-				include '../config/config.php';
+				include_once (DOCUMENT_ROOT .'config/config.php');
 
 				$consulta = mysqli_query($databaseConnection, $peticion);
 			
@@ -281,7 +284,7 @@
 			);
 
 			foreach ($alterTable as $peticion) {
-				include '../config/config.php';
+				include_once (DOCUMENT_ROOT . 'config/config.php');
 
 				$consulta = mysqli_query($databaseConnection, $peticion);
 
@@ -293,7 +296,7 @@
 					echo '</script>';
 				}
 
-				include '../config/close_connection.php';
+				closeConnection();
 			}
 
 			if($continue){
@@ -305,7 +308,7 @@
 
 		/* *-*-*-*-*-*-* Insertar la cuenta del admnistrador *-*-*-*-*-*-*-* */
 		if(!$error && $continue && ($adminLogin != "" && $adminPass != "")){
-			include '../config/config.php';
+			include_once (DOCUMENT_ROOT . 'config/config.php');
 
 			$adminAvatar = '';
 
@@ -321,7 +324,7 @@
 				$adminAvatar = $dir_subida . $imageName;
 
 				/* Sube el fichero con su nombre temporal y luego lo mueve con el nuevo nombre de arriba */
-				move_uploaded_file($_FILES['adminAccountAvatar']['tmp_name'], ('../' . $adminAvatar));
+				move_uploaded_file($_FILES['adminAccountAvatar']['tmp_name'], (DOMAIN_PATH . $adminAvatar));
 			} else {
 				$random = rand(1,5);
 				$adminAvatar = "img/avatars/bear" . $random . ".png";
@@ -331,7 +334,7 @@
 
 			$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
-			include '../config/close_connection.php';
+			closeConnection();
 
 			if(!$consulta){
 				$continue = false;
@@ -353,7 +356,7 @@
 
 				echo "$(document).ready(function() {";
 					echo "setTimeout(function(){";
-					echo "window.location.replace('./cleaner.php');";
+					echo "window.location.replace('" . DOMAIN_PATH . "cleaner.php');";
 					echo "}, 5000)";
 				echo "});";
 			echo "</script>";

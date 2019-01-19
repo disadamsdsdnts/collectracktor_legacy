@@ -1,5 +1,5 @@
 <?php
-    include_once '../admin/functions.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
 
@@ -8,8 +8,6 @@
     isActivated();
 
     if(isset($_POST['submitButton'])){
-        include '../config/config.php';
-
         $collectionName = $_POST['collectionName'];
         $collectionDesc = $_POST['collectionDesc'];
         $collectionImage = 'img/0_cans.jpg';

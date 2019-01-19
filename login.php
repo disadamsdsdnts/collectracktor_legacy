@@ -1,8 +1,6 @@
 <?php
 	/* Añadimos los datos de configuración de conexión */
-
-	include './config/config.php';
-	include './admin/functions.php';
+	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
 	/* Iniciamos sesión */
 	session_start();

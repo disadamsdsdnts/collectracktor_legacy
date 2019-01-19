@@ -1,26 +1,22 @@
 <?php
-    include_once '../admin/functions.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
-
-    include_once '../config/config.php';
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Colec-track-tor</title>
+
+	<link rel="stylesheet" type="text/css" href="../css/global.css">
+	<script type="text/javascript" src="../js/updateAccount.js"></script>
+	<link rel="stylesheet" type="text/css" href="../css/account.css">
 </head>
 <body>
 	<?php 
         include_once '../navigator_inside.php';
 	?>
-
-	<link rel="stylesheet" type="text/css" href="../css/global.css">
-	<script type="text/javascript" src="../js/updateAccount.js"></script>
-	<link rel="stylesheet" type="text/css" href="../css/account.css">
-
-	<br>
 
 	<div class="container">
 		<div class="row d-flex justify-content-between">
