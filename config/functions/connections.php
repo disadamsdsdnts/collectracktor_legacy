@@ -1,12 +1,12 @@
 <?php
 	function openConnection(){
-		global $databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection;
+		include($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/config.php');
 
 		return mysqli_connect($databaseHostConnection, $databaseUserConnection, $databasePasswordConnection, $databaseNameConnection);
 	}
 
 	function closeConnection(){
-		global $databaseConnection;
+		include($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/config.php');
 
-		mysqli_close($databaseConnection);
+		return mysqli_close($databaseConnection);
 	}

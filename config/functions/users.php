@@ -3,7 +3,7 @@
     /* APARTADO INICIO DE SESIÓN */
     /* COMPROBAR QUE SE HA INICIADO SESIÓN */
 	function areULogin(){
-		include_once(DOCUMENT_ROOT . 'config/config.php');
+		include(DOCUMENT_ROOT . 'config/config.php');
 
 		if(!isset($_SESSION['login'])){
 			header('Location:' . DOCUMENT_ROOT . '/login.php');
