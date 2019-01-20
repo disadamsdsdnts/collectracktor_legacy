@@ -31,7 +31,7 @@
 
 	<br>
 
-	<div class="card card-body" style="margin: 0 5% 0 5%" id="caridad">
+	<div class="card card-body" id="caridad">
 		<div class="container">
 			<div class="row">
 				<h1>Lista de usuarios</h1>
