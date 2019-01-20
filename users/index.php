@@ -10,6 +10,8 @@
 	<title>Colec-track-tor</title>
 
 	<link rel="stylesheet" type="text/css" href="../css/global.css">
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.2.1.slim.min.js"></script>
+	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/jquery-3.3.1.min.js"></script>
 	<script type="text/javascript" src="../js/updateAccount.js"></script>
 	<link rel="stylesheet" type="text/css" href="../css/account.css">
 </head>
@@ -18,21 +20,21 @@
         include_once '../navigator_inside.php';
 	?>
 
-	<div class="container">
-		<div class="row d-flex justify-content-between">
-			<div class="col-12">
-				<table class="table table-bordered table-hover">
-					<thead class="thead-dark">
-						<tr>
-							<th colspan="4">
-								<h3 class="text-center">
-									Perfil del usuario
-								</h3>
-							</th>
-						</tr>
-					</thead>
-				</table>
-			</div>
+	<br>
+
+	<div class="row d-flex justify-content-between">
+		<div class="col-12">
+			<table class="table table-bordered table-hover">
+				<thead class="thead-dark">
+					<tr>
+						<th colspan="4">
+							<h3 class="text-center">
+								Perfil del usuario
+							</h3>
+						</th>
+					</tr>
+				</thead>
+			</table>
 		</div>
 	</div>
 
