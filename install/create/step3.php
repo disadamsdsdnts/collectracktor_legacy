@@ -15,6 +15,7 @@
 	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/general.css">
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/installer/installer.css">
 
 	<nav id="navigation-bar" class="navbar navbar-dark bg-dark">
 	  <a class="navbar-brand" href="<?= DOMAIN_PATH; ?>index.php">Colec-track-tor</a>
@@ -37,10 +38,6 @@
 
 		<div class="row" id="mensajeria">
 
-		</div>
-	</div>
-</body>
-</html>
 
 <?php
 	$error = false;
@@ -160,18 +157,22 @@
 			$cerrar = fclose($configFile);
 		
 			/* Mostramos al usuario de que se ha creado la configuración */
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Archivo de configuración creado. ]</p>\";";
-			echo '</script>';
+			?>
+			<p class='alert alert-success'>
+				[ Archivo de configuración creado. ]
+			</p>
+			<?php
 
 			$continue = true;
 
 		} else {
 			$error = true;
 			
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido escribir el archivo config.php. Deberá de comprobar los permisos de los archivos.</p>\";";
-			echo '</script>';
+			?>
+			<p class='alert alert-danger'>
+				<strong>Instalación abortada: </strong>No se ha podido escribir el archivo config.php. Deberá de comprobar los permisos de los archivos.
+			</p>
+			<?php
 		}
 
 		/* *-*-*-*-*-* Crear la base de datos *-*-*-*-*-* */
@@ -189,14 +190,18 @@
 			if(!$consulta){
 				$error = true;
 
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la base de datos. Asegurese de que la cuenta que nos ha proporcionado tiene permisos parar crearla.</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-danger'>
+						<strong>Instalación abortada: </strong>No se ha podido crear la base de datos. Asegurese de que la cuenta que nos ha proporcionado tiene permisos parar crearla.
+					</p>
+				<?php
 			} else {
 				$continue = true;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Database creada. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-success'>
+						[ Database creada. ]
+					</p>
+				<?php
 			}
 		}
 
@@ -210,14 +215,18 @@
 			if(!$consulta){
 				$continue = false;
 
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido borrar el usuario '$user'.</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-danger'>
+						<strong>Instalación abortada: </strong>No se ha podido borrar el usuario '$user'.
+					</p>
+				<?php
 			} else {
 				$continue = true;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ El usuario existía, por lo que se ha borrado para crear la cuenta de forma correcta. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-warning'>
+						[ El usuario existía, por lo que se ha borrado para crear la cuenta de forma correcta. ]
+					</p>
+				<?php
 			}
 
 			/* Crear el usuario con la info correcto */
@@ -228,14 +237,14 @@
 			if(!$consulta){
 					$continue = false;
 
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear el usuario '$user'.</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear el usuario '$user'.</p>
+					<?php
 				} else {
 					$continue = true;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Usuario creado. ]</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-success'>[ Usuario creado. ]</p>
+					<?php
 				}
 		}
 
@@ -263,14 +272,14 @@
 				if(!$consulta){
 					$continue = false;
 
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla $actualTableName. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla <?= $actualTableName ?>. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>
+					<?php
 				} else {
 					$continue = true;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tabla '$actualTableName' creada. ]</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-success'>[ Tabla '<?= $actualTableName ?>' creada. ]</p>
+					<?php
 				}
 
 				mysqli_close($tempConnection);
@@ -306,9 +315,9 @@
 				if(!$consulta){
 
 					$continue = false;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><b>Instalación abortada: </b>No se ha podido modificar las tablas ya creadas. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para modificarla.</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-danger'><b>Instalación abortada: </b>No se ha podido modificar las tablas ya creadas. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para modificarla.</p>
+					<?php
 
 					break;
 				}
@@ -317,9 +326,9 @@
 			}
 
 			if($continue){
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tablas creadas. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-success'>[ Tablas creadas. ]</p>
+				<?php
 			}
 		}
 
@@ -355,28 +364,28 @@
 
 			if(!$consulta){
 				$continue = false;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación interrumpida: </strong>No se ha podido crear el usuario administrador. Asegurese de que los credenciales de la base de datos tiene permiso para añadir filas a las tablas.</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-danger'><strong>Instalación interrumpida: </strong>No se ha podido crear el usuario administrador. Asegurese de que los credenciales de la base de datos tiene permiso para añadir filas a las tablas.</p>
+				<?php
 			} else {
 				$continue = true;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Usuario $adminLogin creado. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-success'>[ Usuario <?= $adminLogin ?> creado. ]</p>
+				<?php
 			}
 		}
 
 		/* Avisamos al usuario que está todo listo y lo mandamos al limpiador de archivos. */
-		if(!$error && $continue){
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ <strong>Instalación finalizada.</strong> Le redirigimos a la web en 5 segundos... ]</p>\";";
+		if(!$error && $continue){?>
+			<p class='alert alert-success'>[ <strong>Instalación finalizada.</strong> ]</p>
 
-				// echo "$(document).ready(function() {";
-				// 	echo "setTimeout(function(){";
-				// 	echo "window.location.replace('" . DOMAIN_PATH . "cleaner.php');";
-				// 	echo "}, 5000)";
-				// echo "});";
-			echo "</script>";
+			<p><a href="../cleaner.php"><button type="button" class="btn btn-dark float-right">Continuar</button></a></p>
+		<?php
 		}
 	}
 ?>
+
+		</div>
+	</div>
+</body>
+</html>
