@@ -179,12 +179,12 @@
 			/* Borramos la base de datos si existe */
 			$sql = "DROP DATABASE IF EXISTS `$database`";
 
-			$consulta = mysqli_query(mysqli_connect("$conexion", "$creatorLogin", "$creatorPassword"), $sql);
+			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
 
 			/* Creamos la base de datos */
 			$sql = "CREATE DATABASE `$database`";
 
-			$consulta = mysqli_query(mysqli_connect("$conexion", "$creatorLogin", "$creatorPassword"), $sql);
+			$consulta = mysqli_query(mysqli_connect($conexion, $creatorLogin, $creatorPassword), $sql);
 
 			if(!$consulta){
 				$error = true;
@@ -243,41 +243,37 @@
 		/* *-*-*-*-*-* Crear las tablas *-*-*-*-*-* */
 		if(!$error && $continue){
 			$createTable = array(
-				"CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaCans (`Brand` varchar(255) DEFAULT NULL, `Flavor` varchar(255) DEFAULT NULL, `Quantity` int(5) DEFAULT NULL, `Year` year(4) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin añadir)', `Image` varchar(255) NOT NULL DEFAULT 'img/0_cans.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaCollections (`ID` int(11) NOT NULL, `Name` varchar(255) NOT NULL DEFAULT 'Mi colección', `Description` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT NULL, `Category` enum('cans','movies','books','music') NOT NULL, `UsersLogin` varchar(16) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaItem (`ID` int(20) NOT NULL, `CollectionsID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaMovies (`Title` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Year` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Starring` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Directed_By` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Format` enum('DVD','VHS','Blu-Ray','Digital','Betamax','(sin indicar)') COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin indicar)', `Barcode` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin datos)', `Image` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'img/0_movies.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;",
-				"CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.png', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaUserDefinedCollections (`ID` int(11) NOT NULL, `Name` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `Description` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `User_TableID` text COLLATE utf8_spanish_ci, `Image` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Vista` enum('cuadricula','listado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'listado', `UsersLogin` varchar(16) CHARACTER SET utf8 NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;",
-				"CREATE TABLE $tablaUsers (`Login` varchar(16) CHARACTER SET utf8 NOT NULL, `Password` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `First Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Last Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Email` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Birth Date` date DEFAULT NULL, `Rol` enum('administrator','registered') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'registered', `Avatar` varchar(255) COLLATE utf8_spanish_ci NULL DEFAULT 'img/avatars/bear2.png', `Activated Account` tinyint(1) NOT NULL DEFAULT '0', `Activation Code` int(4) NOT NULL DEFAULT '9517') ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"
+				[$tablaBooks, "CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaCans, "CREATE TABLE $tablaCans (`Brand` varchar(255) DEFAULT NULL, `Flavor` varchar(255) DEFAULT NULL, `Quantity` int(5) DEFAULT NULL, `Year` year(4) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin añadir)', `Image` varchar(255) NOT NULL DEFAULT 'img/0_cans.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaCollections, "CREATE TABLE $tablaCollections (`ID` int(11) NOT NULL, `Name` varchar(255) NOT NULL DEFAULT 'Mi colección', `Description` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT NULL, `Category` enum('cans','movies','books','music') NOT NULL, `UsersLogin` varchar(16) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaItem, "CREATE TABLE $tablaItem (`ID` int(20) NOT NULL, `CollectionsID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaMovies, "CREATE TABLE $tablaMovies (`Title` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Year` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Starring` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Directed_By` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Format` enum('DVD','VHS','Blu-Ray','Digital','Betamax','(sin indicar)') COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin indicar)', `Barcode` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin datos)', `Image` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'img/0_movies.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
+				[$tablaMusic, "CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.png', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaUserDefinedCollections, "CREATE TABLE $tablaUserDefinedCollections (`ID` int(11) NOT NULL, `Name` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `Description` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `User_TableID` text COLLATE utf8_spanish_ci, `Image` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Vista` enum('cuadricula','listado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'listado', `UsersLogin` varchar(16) CHARACTER SET utf8 NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
+				[$tablaUsers, "CREATE TABLE $tablaUsers (`Login` varchar(16) CHARACTER SET utf8 NOT NULL, `Password` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `First Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Last Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Email` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Birth Date` date DEFAULT NULL, `Rol` enum('administrator','registered') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'registered', `Avatar` varchar(255) COLLATE utf8_spanish_ci NULL DEFAULT 'img/avatars/bear2.png', `Activated Account` tinyint(1) NOT NULL DEFAULT '0', `Activation Code` int(4) NOT NULL DEFAULT '9517') ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"]
 			);
 
 			foreach ($createTable as $peticion){
-				include_once (DOCUMENT_ROOT .'config/config.php');
+				$tempConnection = mysqli_connect($conexion, $creatorLogin, $creatorPassword, $database);
 
-				$sql = "DROP TABLE IF EXISTS `$peticion`";
+				$actualTableName = $peticion[0];
 				
-				$consulta = mysqli_query($databaseConnection, $sql);
-
-				closeConnection();
-
-				include_once (DOCUMENT_ROOT .'config/config.php');
-
-				$consulta = mysqli_query($databaseConnection, $peticion);
+				$consulta = mysqli_query($tempConnection, $peticion[1]) or die(mysqli_error($tempConnection));
 			
 				if(!$consulta){
 					$continue = false;
 
 					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>\";";
+						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla $actualTableName. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>\";";
 					echo '</script>';
 				} else {
 					$continue = true;
 					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tabla creada. ]</p>\";";
+						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tabla '$actualTableName' creada. ]</p>\";";
 					echo '</script>';
 				}
+
+				mysqli_close($tempConnection);
 			}
 
 			/* Configuración adicional */
@@ -303,9 +299,9 @@
 			);
 
 			foreach ($alterTable as $peticion) {
-				include_once (DOCUMENT_ROOT . 'config/config.php');
+				$tempConnection = mysqli_connect($conexion, $creatorLogin, $creatorPassword, $database);
 
-				$consulta = mysqli_query($databaseConnection, $peticion);
+				$consulta = mysqli_query($tempConnection, $peticion);
 
 				if(!$consulta){
 
@@ -313,9 +309,11 @@
 					echo '<script type="text/javascript">';
 						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><b>Instalación abortada: </b>No se ha podido modificar las tablas ya creadas. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para modificarla.</p>\";";
 					echo '</script>';
+
+					break;
 				}
 
-				closeConnection();
+				mysqli_close($tempConnection);
 			}
 
 			if($continue){
@@ -353,7 +351,7 @@
 
 			$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
-			closeConnection();
+			mysqli_close($databaseConnection);
 
 			if(!$consulta){
 				$continue = false;
