@@ -1,5 +1,5 @@
 <?php
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
+	include($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -15,6 +15,8 @@
 	<script type="text/javascript" src="<?= DOMAIN_PATH; ?>js/bootstrap.min.js"></script>
 	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/general.css">
+	<link rel="stylesheet" type="text/css" href="<?= DOMAIN_PATH; ?>css/installer/installer.css">
+
 
 	<nav id="navigation-bar" class="navbar navbar-dark bg-dark">
 	  <a class="navbar-brand" href="<?= DOMAIN_PATH; ?>index.php">Colec-track-tor</a>
@@ -37,10 +39,6 @@
 
 		<div class="row" id="mensajeria">
 
-		</div>
-	</div>
-</body>
-</html>
 
 <?php
 	$error = false;
@@ -53,6 +51,13 @@
 		$login = $_POST['installNombre'];
 		$password = $_POST['installPassword'];
 		$prefix = $_POST['installPrefix'];
+
+		$adminLogin = $_POST['adminAccountLogin'];
+		$adminPass = $_POST['adminAccountPass'];
+		$adminFirstName = $_POST['adminAccountFirstName'];
+		$adminLastName = $_POST['adminAccountLastName'];
+		$adminEmail = $_POST['adminAccountEmail'];
+		$adminBirthday = $_POST['adminAccountBirthdate'];
 
 		/* Archivo donde estará las conexiones y variables de tablas */
 		$configFilePath = DOCUMENT_ROOT . "config/config.php";
@@ -78,7 +83,6 @@
 			$tablaUserDefinedCollections = $prefix . $tablaUserDefinedCollections;
 			$tablaUsers = $prefix . $tablaUsers;
 		}
-
 
 		/* *-*-*-*-*-* Archivo configuración *-*-*-*-*-* */
 		/* Comprobamos si existe un config anterior y, si existe, lo borramos para crear uno nuevo */
@@ -150,63 +154,86 @@
 			$cerrar = fclose($configFile);
 		
 			/* Mostramos al usuario de que se ha creado la configuración */
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Archivo de configuración creado. ]</p>\";";
-			echo '</script>';
+			?>
+				<p class='alert alert-success'>[ Archivo de configuración creado. ]</p>
+			<?php
 
 			$continue = true;
 
 		} else {
 			$error = true;
 			
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido escribir el archivo config.php. Deberá de comprobar los permisos de los archivos.</p>\";";
-			echo '</script>';
+			?>
+				<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido escribir el archivo config.php. Deberá de comprobar los permisos de los archivos.</p>
+			<?php
 		}
 
 		/* *-*-*-*-*-* Crear las tablas *-*-*-*-*-* */
 		if(!$error && $continue){
 			$cleaner = array(
-				"$tablaBooks", "$tablaCans", "$tablaCollections", "$tablaItem", "$tablaMovies", "$tablaMusic", "$tablaUserDefinedCollections", "$tablaUsers"
+				"$tablaBooks", "$tablaCans", "$tablaMovies", "$tablaMusic", "$tablaUserDefinedCollections", "$tablaItem", "$tablaCollections", "$tablaUsers"
 			);
 
 			foreach($cleaner as $actual){
-				include_once (DOCUMENT_ROOT . 'config/config.php');
+				include (DOCUMENT_ROOT . 'config/config.php');
+
+				$sql = "SELECT concat('ALTER TABLE ', TABLE_NAME, ' DROP FOREIGN KEY ', CONSTRAINT_NAME, ';') FROM information_schema.key_column_usage WHERE CONSTRAINT_SCHEMA = '$database' AND TABLE_NAME='$actual' AND REFERENCED_TABLE_NAME IS NOT NULL;";
+					
+				$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
+
+				include (DOCUMENT_ROOT . 'config/config.php');
 
 				$sql = "DROP TABLE IF EXISTS `$actual`";
 				
-				$consulta = mysqli_query($databaseConnection, $sql);
+				$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
-				closeConnection();
+				if($consulta){
+					?>
+					<p class='alert alert-warning'>
+						Se ha eliminado la tabla '<?= $actual ?>' para evitar errores.
+					</p>
+					<?php
+				}
 			}
 
+			/* Volver a comprobar la integridad con las claves foráneas */
+			include (DOCUMENT_ROOT . 'config/config.php');
+
+			$sql = "SET FOREIGN_KEY_CHECKS = 1";
+				
+			$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
+
+			closeConnection();
+
 			$createTable = array(
-				"CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaCans (`Brand` varchar(255) DEFAULT NULL, `Flavor` varchar(255) DEFAULT NULL, `Quantity` int(5) DEFAULT NULL, `Year` year(4) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin añadir)', `Image` varchar(255) NOT NULL DEFAULT 'img/0_cans.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaCollections (`ID` int(11) NOT NULL, `Name` varchar(255) NOT NULL DEFAULT 'Mi colección', `Description` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT NULL, `Category` enum('cans','movies','books','music') NOT NULL, `UsersLogin` varchar(16) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaItem (`ID` int(20) NOT NULL, `CollectionsID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaMovies (`Title` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Year` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Starring` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Directed_By` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Format` enum('DVD','VHS','Blu-Ray','Digital','Betamax','(sin indicar)') COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin indicar)', `Barcode` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin datos)', `Image` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'img/0_movies.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;",
-				"CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.png', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;",
-				"CREATE TABLE $tablaUserDefinedCollections (`ID` int(11) NOT NULL, `Name` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `Description` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `User_TableID` text COLLATE utf8_spanish_ci, `Image` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Vista` enum('cuadricula','listado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'listado', `UsersLogin` varchar(16) CHARACTER SET utf8 NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;",
-				"CREATE TABLE $tablaUsers (`Login` varchar(16) CHARACTER SET utf8 NOT NULL, `Password` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `First Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Last Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Email` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Birth Date` date DEFAULT NULL, `Rol` enum('administrator','registered') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'registered', `Avatar` varchar(255) COLLATE utf8_spanish_ci NULL DEFAULT 'img/avatars/bear2.png', `Activated Account` tinyint(1) NOT NULL DEFAULT '0', `Activation Code` int(4) NOT NULL DEFAULT '9517') ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"
+				[$tablaBooks, "CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaCans, "CREATE TABLE $tablaCans (`Brand` varchar(255) DEFAULT NULL, `Flavor` varchar(255) DEFAULT NULL, `Quantity` int(5) DEFAULT NULL, `Year` year(4) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Country` varchar(255) CHARACTER SET utf8 COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin añadir)', `Image` varchar(255) NOT NULL DEFAULT 'img/0_cans.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaCollections, "CREATE TABLE $tablaCollections (`ID` int(11) NOT NULL, `Name` varchar(255) NOT NULL DEFAULT 'Mi colección', `Description` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT NULL, `Category` enum('cans','movies','books','music') NOT NULL, `UsersLogin` varchar(16) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaItem, "CREATE TABLE $tablaItem (`ID` int(20) NOT NULL, `CollectionsID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaMovies, "CREATE TABLE $tablaMovies (`Title` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Year` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Starring` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Directed_By` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Format` enum('DVD','VHS','Blu-Ray','Digital','Betamax','(sin indicar)') COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin indicar)', `Barcode` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin datos)', `Image` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'img/0_movies.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
+				[$tablaMusic, "CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.png', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaUserDefinedCollections, "CREATE TABLE $tablaUserDefinedCollections (`ID` int(11) NOT NULL, `Name` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `Description` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `User_TableID` text COLLATE utf8_spanish_ci, `Image` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Vista` enum('cuadricula','listado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'listado', `UsersLogin` varchar(16) CHARACTER SET utf8 NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
+				[$tablaUsers, "CREATE TABLE $tablaUsers (`Login` varchar(16) CHARACTER SET utf8 NOT NULL, `Password` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `First Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Last Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Email` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Birth Date` date DEFAULT NULL, `Rol` enum('administrator','registered') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'registered', `Avatar` varchar(255) COLLATE utf8_spanish_ci NULL DEFAULT 'img/avatars/bear2.png', `Activated Account` tinyint(1) NOT NULL DEFAULT '0', `Activation Code` int(4) NOT NULL DEFAULT '9517') ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"]
 			);
 
 			foreach ($createTable as $peticion){
-				include_once (DOCUMENT_ROOT . 'config/config.php');
+				include (DOCUMENT_ROOT . 'config/config.php');
 
-				$consulta = mysqli_query($databaseConnection, $peticion);
+				$actualTableName = $peticion[0];
+
+				$queryCreateTable = mysqli_query($databaseConnection, $peticion[1]);
 			
-				if(!$consulta){
+				if(!$queryCreateTable){
 					$continue = false;
 
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-danger'><strong>Instalación abortada: </strong>No se ha podido crear la tabla '<?= $actualTableName ?>'. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para crearla.</p>
+					<?php
 				} else {
 					$continue = true;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tabla creada. ]</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-success'>[ Tabla '<?= $actualTableName ?>' creada. ]</p>
+					<?php
 				}
 			}
 
@@ -233,31 +260,31 @@
 			);
 
 			foreach ($alterTable as $peticion) {
-				include_once (DOCUMENT_ROOT . 'config/config.php');
+				include (DOCUMENT_ROOT . 'config/config.php');
 
 				$consulta = mysqli_query($databaseConnection, $peticion) or die(mysqli_error($databaseConnection));
 
 				if(!$consulta){
 
 					$continue = false;
-					echo '<script type="text/javascript">';
-						echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><b>Instalación abortada: </b>No se ha podido modificar las tablas ya creadas. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para modificarla.</p>\";";
-					echo '</script>';
+					?>
+						<p class='alert alert-danger'><b>Instalación abortada: </b>No se ha podido modificar las tablas ya creadas. Asegurese de que la cuenta que nos ha proporcionado tiene permisos para modificarla.</p>
+					<?php
 				}
 
 				closeConnection();
 			}
 
 			if($continue){
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Tablas creadas. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-success'>[ Tablas creadas. ]</p>
+				<?php
 			}
 		}
 
 		/* *-*-*-*-*-*-* Insertar la cuenta del admnistrador *-*-*-*-*-*-*-* */
 		if(!$error && $continue && ($adminLogin != "" && $adminPass != "")){
-			include_once (DOCUMENT_ROOT . 'config/config.php');
+			include (DOCUMENT_ROOT . 'config/config.php');
 
 			$adminAvatar = '';
 
@@ -287,28 +314,28 @@
 
 			if(!$consulta){
 				$continue = false;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-danger'><strong>Instalación interrumpida: </strong>No se ha podido crear el usuario administrador. Asegurese de que los credenciales de la base de datos tiene permiso para añadir filas a las tablas.</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-danger'><strong>Instalación interrumpida: </strong>No se ha podido crear el usuario administrador. Asegurese de que los credenciales de la base de datos tiene permiso para añadir filas a las tablas.</p>
+				<?php
 			} else {
 				$continue = true;
-				echo '<script type="text/javascript">';
-					echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ Usuario $adminLogin creado. ]</p>\";";
-				echo '</script>';
+				?>
+					<p class='alert alert-success'>[ Usuario <?= $adminLogin ?> creado. ]</p>
+				<?php
 			}
 		}
 
 		/* Avisamos al usuario que está todo listo y lo mandamos al limpiador de archivos. */
-		if(!$error && $continue){
-			echo '<script type="text/javascript">';
-				echo "document.getElementById('mensajeria').innerHTML += \"<p class='alert alert-success'>[ <strong>Instalación finalizada.</strong> Le redirigimos a la web en 5 segundos... ]</p>\";";
+		if(!$error && $continue){?>
+			<p class='alert alert-success'>[ <strong>Instalación finalizada.</strong> ]</p>
 
-				echo "$(document).ready(function() {";
-					echo "setTimeout(function(){";
-					echo "window.location.replace('" . DOMAIN_PATH . "install/cleaner.php');";
-					echo "}, 5000)";
-				echo "});";
-			echo "</script>";
+			<p><a href="../cleaner.php"><button type="button" class="btn btn-dark float-right">Continuar</button></a></p>
+		<?php
 		}
 	}
 ?>
+
+		</div>
+	</div>
+</body>
+</html>
