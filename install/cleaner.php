@@ -11,11 +11,11 @@
 		DOMAIN_PATH . "step1.php"
 	);
 
-	// foreach ($cleaner as $file) {
-	// 	if(file_exists($file)){
-	// 		unlink($file);
-	// 	}
-	// }
+	foreach ($cleaner as $file) {
+		if(file_exists($file)){
+			unlink($file);
+		}
+	}
 
 	header('Location: ' . DOMAIN_PATH . 'index.php');
 
