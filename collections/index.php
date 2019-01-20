@@ -130,7 +130,7 @@
 
 		$data = mysqli_query($databaseConnection, $query);
 
-		if (mysqli_num_rows($data) > 0){
+		if ($data != false && mysqli_num_rows($data) > 0){
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
@@ -190,7 +190,7 @@
 
 		$data = mysqli_query($databaseConnection, $query);
 
-		if (mysqli_num_rows($data) > 0){
+		if ($data != false && mysqli_num_rows($data) > 0){
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
@@ -251,7 +251,7 @@
 
 		$data = mysqli_query($databaseConnection, $query);
 
-		if (mysqli_num_rows($data) > 0){
+		if ($data != false && mysqli_num_rows($data) > 0){
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
@@ -312,7 +312,7 @@
 
 		$data = mysqli_query($databaseConnection, $query);
 
-		if (mysqli_num_rows($data) > 0){
+		if ($data != false && mysqli_num_rows($data) > 0){
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
@@ -373,7 +373,7 @@
 
 		$data = mysqli_query($databaseConnection, $query);
 
-		if (mysqli_num_rows($data) > 0){
+		if ($data != false && mysqli_num_rows($data) > 0){
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
