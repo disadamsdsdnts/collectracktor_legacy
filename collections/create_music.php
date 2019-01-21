@@ -19,7 +19,7 @@
 
         $ID = mysqli_insert_id($databaseConnection);
 
-        if(isset($_FILES['descriptiveImage'])){
+        if(file_exists($_FILES['descriptiveImage']['tmp_name']) || is_uploaded_file($_FILES['descriptiveImage']['tmp_name'])){
             $dir_subida = 'img/';
             $fichero_subido = $dir_subida . basename($_FILES['descriptiveImage']['name']);
             $imageName = $ID . "." . pathinfo($_FILES['descriptiveImage']['name'], PATHINFO_EXTENSION);
