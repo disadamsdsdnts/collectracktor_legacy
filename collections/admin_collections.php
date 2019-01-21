@@ -56,7 +56,7 @@
 	<?php
 	openConnection();
 
-	$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser'";
+	$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser'";
 
 	$data = mysqli_query($databaseConnection, $query);
 

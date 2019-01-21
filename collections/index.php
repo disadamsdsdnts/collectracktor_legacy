@@ -1,5 +1,5 @@
 <?php
-	include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
+	include($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
 	session_start();
 
@@ -126,7 +126,7 @@
 		/* Listas de música */
 		openConnection();
 
-		$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser' AND Category='music'";
+		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='music'";
 
 		$data = mysqli_query($databaseConnection, $query);
 
@@ -186,7 +186,7 @@
 		/* Listas de latas */
 		openConnection();
 
-		$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser' AND Category='cans'";
+		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='cans'";
 
 		$data = mysqli_query($databaseConnection, $query);
 
@@ -247,7 +247,7 @@
 		/* Listas de libros */
 				openConnection();
 
-		$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser' AND Category='books'";
+		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='books'";
 
 		$data = mysqli_query($databaseConnection, $query);
 
@@ -308,7 +308,7 @@
 		/* Listas de películas */
 				openConnection();
 
-		$query = "SELECT * FROM `collections` WHERE UsersLogin='$actualLoginUser' AND Category='movies'";
+		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='movies'";
 
 		$data = mysqli_query($databaseConnection, $query);
 
