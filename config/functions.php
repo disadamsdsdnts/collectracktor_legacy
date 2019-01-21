@@ -3,7 +3,7 @@
     if(!defined('DOMAIN_PATH')) define('DOMAIN_PATH', ('//' . $_SERVER['HTTP_HOST'] . '/'));
     if(!defined('DOCUMENT_ROOT')) define('DOCUMENT_ROOT', ($_SERVER['DOCUMENT_ROOT'] . '/'));
 
-    include ('config.php');
+    include (DOCUMENT_ROOT . 'config/config.php');
 
     /* Funciones para el manejo de conexiones */
     include_once('functions/connections.php');
