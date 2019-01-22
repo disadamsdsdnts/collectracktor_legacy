@@ -123,7 +123,7 @@
 			"/* Table item */\n" . 
 			'$tableItem =' . "'`$tablaItem`';\n\n" .
 			"/* Table cans */\n" . 
-			'$tableNameCans =' . "'`$tablaCans`';\n\n" . 
+			'$tableCans =' . "'`$tablaCans`';\n\n" . 
 			'$canBrand =' . "'Brand';\n" . 
 			'$canFlavor =' . "'Flavor';\n" . 
 			'$canQuantity =' . "'Quantity';\n" . 
@@ -143,7 +143,7 @@
 			'$musicBarcode =' . "'Barcode';\n" . 
 			'$musicImage =' . "'Image';\n\n" . 
 			"/* Table books */\n" . 
-			'$tableNameBooks =' . "'`$tablaBooks`';\n\n" . 
+			'$tableBooks =' . "'`$tablaBooks`';\n\n" . 
 			'$bookTitle =' . "'Title';\n" . 
 			'$bookAuthor =' . "'Author';\n" . 
 			'$bookPublisher =' . "'Publisher';\n" . 
