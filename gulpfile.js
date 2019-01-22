@@ -23,6 +23,11 @@ gulp.task('sass', function () {
 
 gulp.task('watch', ['browser-sync'], function () {
     gulp.watch("css/**/*.scss", ['sass']);
+    gulp.watch("admin/**/*.php").on('change', bs.reload);
+    gulp.watch("collections/**/*.php").on('change', bs.reload);
+    gulp.watch("config/**/*.php").on('change', bs.reload);
+    gulp.watch("install/**/*.php").on('change', bs.reload);
+    gulp.watch("users/**/*.php").on('change', bs.reload);
     gulp.watch("*.php").on('change', bs.reload);
 });
 
