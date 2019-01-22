@@ -42,7 +42,7 @@
 
 	<?php
 
-	if (mysqli_num_rows($data) == 1){
+	if ($data != false && mysqli_num_rows($data) == 1){
 		$infoID = $info['ID'];
 		?>
 			<div class="row d-flex justify-content-between">
@@ -91,7 +91,7 @@
 						</thead>
 						<tbody>
 							<?php
-								$query = "SELECT * FROM item, books WHERE (item.ID = books.ItemID) AND collectionsID='$infoID'";
+								$query = "SELECT * FROM $tableItem, $tableBooks WHERE ($tableItem.ID = $tableBooks.ItemID) AND collectionsID='$infoID'";
 
 								$allItems = mysqli_query($databaseConnection, $query);
 

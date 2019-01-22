@@ -62,7 +62,7 @@
 
 	$contentExists = 0;
 
-	if (mysqli_num_rows($data) > 0){
+	if ($data != false && mysqli_num_rows($data) > 0){
 	?>
 						<?php
 							while($actualRow = mysqli_fetch_assoc($data)){
@@ -94,7 +94,7 @@
 
 						$userCollections = mysqli_query($databaseConnection, $query);
 
-						if (mysqli_num_rows($data) > 0){
+						if ($data != false && mysqli_num_rows($data) > 0){
 							while($actualRow = mysqli_fetch_assoc($userCollections)){
 								$actualID = $actualRow['ID'];
 								?>

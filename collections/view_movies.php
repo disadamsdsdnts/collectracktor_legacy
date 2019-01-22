@@ -9,8 +9,22 @@
 
 	$actualLoginUser = $_SESSION['login'];
 
+	$collectionToShow = mysqli_real_escape_string($databaseConnection, $_GET['id_collection']);
+
+	/* if(!isYourCollection($collectionToShow, $actualLoginUser)){
+		?>
+			<script>
+				alert('Maldita rata callejera, esto no es tuyo, no intentes burlar mi seguridad. grrrrrrrrrrrr.');
+				setTimeout(function(){ <?php header("Location: " . DOMAIN_PATH . "/index.php"); ?> }, 500);
+			</script>
+		<?php
+	} */
+
+	$data = '';
+	$info = '';
+
 	if(isset($_GET['id_collection'])){
-		$collectionToShow = mysqli_real_escape_string($databaseConnection, $_GET['id_collection']);
+		
 
 		$query = "SELECT * FROM $tableCollections WHERE ID='$collectionToShow'";
 
@@ -41,7 +55,7 @@
 
 	<?php
 
-	if (mysqli_num_rows($data) == 1){
+	if ($data != false && mysqli_num_rows($data) == 1){
 		$infoID = $info['ID'];
 		?>
 			<div class="row d-flex justify-content-between">
@@ -93,7 +107,7 @@
 						</thead>
 						<tbody>
 							<?php
-								$query = "SELECT * FROM item, movies WHERE (item.ID = movies.ItemID) AND collectionsID='$infoID'";
+								$query = "SELECT * FROM $tableItem, $tableMovies WHERE ($tableItem.ID = $tableMovies.ItemID) AND collectionsID='$infoID'";
 
 								$allItems = mysqli_query($databaseConnection, $query);
 

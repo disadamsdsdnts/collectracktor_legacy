@@ -37,7 +37,7 @@
 
         $ID = mysqli_insert_id($databaseConnection);
 
-        $query = "INSERT INTO $tableNameCans($canBrand, $canFlavor, $canQuantity, $canYear, $canBarcode, $canCountry, $canImage, ItemID) VALUES('$itemBrand', '$itemFlavor', '$itemQuantity', '$itemYear', '$itemBarcode', '$itemCountry', '$itemImage', '$ID')";
+        $query = "INSERT INTO $tableCans($canBrand, $canFlavor, $canQuantity, $canYear, $canBarcode, $canCountry, $canImage, ItemID) VALUES('$itemBrand', '$itemFlavor', '$itemQuantity', '$itemYear', '$itemBarcode', '$itemCountry', '$itemImage', '$ID')";
 
         $insert = mysqli_query($databaseConnection, $query);
 
@@ -50,7 +50,7 @@
 
             download_image($itemImage, $rutaAGuardar);
 
-            $query = "UPDATE $tableNameCans SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableCans SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
 
             $data = mysqli_query($databaseConnection, $query);
         } else if(isset($_FILES['itemImage'])){
@@ -59,7 +59,7 @@
             $imageName = $ID . "." . pathinfo($_FILES['itemImage']['name'], PATHINFO_EXTENSION);
             $rutaFinal = $dir_subida . $imageName;
             move_uploaded_file($_FILES['itemImage']['tmp_name'], $rutaFinal);
-            $query = "UPDATE $tableNameCans SET Image='$rutaFinal' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableCans SET Image='$rutaFinal' WHERE ItemID='$ID'";
             $data = mysqli_query($databaseConnection, $query);
         }
 

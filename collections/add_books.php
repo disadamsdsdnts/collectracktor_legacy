@@ -36,7 +36,7 @@
 
         $ID = mysqli_insert_id($databaseConnection);
 
-        $query = "INSERT INTO $tableNameBooks($bookTitle, $bookAuthor, $bookPublisher, $bookPublishDate, $bookISBN, $bookImage, ItemID) VALUES('$itemTitle', '$itemAuthor', '$itemPublisher', '$itemPublishDate', '$itemISBN', '$itemImage', '$ID')";
+        $query = "INSERT INTO $tableBooks($bookTitle, $bookAuthor, $bookPublisher, $bookPublishDate, $bookISBN, $bookImage, ItemID) VALUES('$itemTitle', '$itemAuthor', '$itemPublisher', '$itemPublishDate', '$itemISBN', '$itemImage', '$ID')";
 
         $insert = mysqli_query($databaseConnection, $query);
 
@@ -49,7 +49,7 @@
 
             download_image($itemImage, $rutaAGuardar);
 
-            $query = "UPDATE $tableNameBooks SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableBooks SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
 
             $data = mysqli_query($databaseConnection, $query);
         } else if(isset($_FILES['itemImage'])){
@@ -58,7 +58,7 @@
             $imageName = $ID . "." . pathinfo($_FILES['itemImage']['name'], PATHINFO_EXTENSION);
             $rutaFinal = $dir_subida . $imageName;
             move_uploaded_file($_FILES['itemImage']['tmp_name'], $rutaFinal);
-            $query = "UPDATE $tableNameBooks SET Image='$rutaFinal' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableBooks SET Image='$rutaFinal' WHERE ItemID='$ID'";
             $data = mysqli_query($databaseConnection, $query);
         }
 

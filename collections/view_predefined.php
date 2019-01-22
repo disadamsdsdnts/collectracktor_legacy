@@ -57,7 +57,7 @@
 
 	$totalColSpan = sizeof($allColumns);
 
-	if (mysqli_num_rows($data) == 1){
+	if ($data != false && mysqli_num_rows($data) == 1){
 		$infoID = $info['ID'];
 		?>
 			<div class="row d-flex justify-content-between">
