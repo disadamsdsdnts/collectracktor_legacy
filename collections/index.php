@@ -18,10 +18,8 @@
 <body>
 	<?php 
 		include_once ('../navigator_inside.php');
+		echo insertStyles(__FILE__);
 	?>
-
-	<link rel="stylesheet" type="text/css" href="../css/collections_index.css">
-	<link rel="stylesheet" type="text/css" href="../css/collections_create.css">
 
 	<br>
 
