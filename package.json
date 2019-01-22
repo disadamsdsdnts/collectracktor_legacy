@@ -1,0 +1,27 @@
+{
+  "name": "colectracktor",
+  "version": "1.0.0",
+  "description": "La mejor colección de colecciones que colecciona coleciones",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://disadamsdsdnts@github.com/disadamsdsdnts/proyectoFinal-IAW-PW-.git"
+  },
+  "author": "Adan Kevin Martin Rodriguez",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/disadamsdsdnts/proyectoFinal-IAW-PW-/issues"
+  },
+  "homepage": "https://github.com/disadamsdsdnts/proyectoFinal-IAW-PW-#readme",
+  "dependencies": {
+    "browser-sync": "^2.26.3",
+    "browsersync": "0.0.1-security",
+    "gulp": "3.9.1"
+  },
+  "devDependencies": {
+    "gulp-sass": "^4.0.2"
+  }
+}
