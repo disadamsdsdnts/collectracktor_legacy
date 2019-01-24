@@ -108,6 +108,14 @@
 					<span>➕ 📝</span> Añadir una nueva colección personalizada
 				</button>
 			</a>
+
+			<hr>
+
+			<a href="./create_cex.php">
+				<button type="button" class="btn btn-secondary">
+					<span>➕ <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 25px"></span> Añadir un rastreador para WeBuy
+				</button>
+			</a>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
@@ -116,251 +124,89 @@
 	  </div>
 	</div>
 
-	<br>
-
 	<?php
 		$contentExists = 0;
 
-		/* Listas de música */
-		openConnection();
+		$styles = array(
+			[
+				'name' =>  	'📋 Listas de música 🎼', 
+				'style' => 	'music'
+			],
+			[
+				'name' => 	'📋 Listas de latas 🥫',
+				'style' => 	'cans'
+			],
+			[
+				'name' => 	'📋 Listas de libros 📚',
+				'style' => 	'books'
+			],
+			[
+				'name' => 	'📋 Listas de películas 🎬',
+				'style' => 	'movies'
+			]
+		);
 
-		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='music'";
+		foreach($styles as $actualStyle){
+			openConnection();
 
-		$data = mysqli_query($databaseConnection, $query);
+			$category = $actualStyle['style'];
 
-		if ($data != false && mysqli_num_rows($data) > 0){
-		?>
-			<div class="row d-flex justify-content-between">
-				<div class="col-12">
-					<table class="table table-bordered table-hover">
-						<thead class="thead-dark">
-							<tr>
-								<th colspan="3">
-									<h5>
-										📋 Listas de música 🎼
-									</h5>
-								</th>
-							</tr>
-							<tr>
-								<th max-width="200px">
-									Imagen descriptiva
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Descripción
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								while($actualRow = mysqli_fetch_assoc($data)){
-									$actualID = $actualRow['ID'];
-									?>
-										<tr onclick="window.location='./view_music.php?id_collection=<?php echo $actualID; ?>'">
-											<td class="align-middle text-center">
-												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
-											</td>
-											<td class="align-middle">
-												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
-											</td>
-											<td class="align-middle">
-												<?php echo $actualRow['Description']; ?>
-											</td>
-										</tr>
-									<?php
-								}
-							?>
-						</tbody>
-					</table>
+			$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='$category'";
+
+			$data = mysqli_query($databaseConnection, $query);
+
+			if ($data != false && mysqli_num_rows($data) > 0){
+			?>
+				<div class="row d-flex justify-content-between">
+					<div class="col-12">
+						<table class="table table-bordered table-hover">
+							<thead class="thead-dark">
+								<tr>
+									<th colspan="3">
+										<h5>
+											<?= $actualStyle['name'] ?>
+										</h5>
+									</th>
+								</tr>
+								<tr>
+									<th max-width="150px">
+										Imagen descriptiva
+									</th>
+									<th>
+										Nombre
+									</th>
+									<th>
+										Descripción
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<?php
+									while($actualRow = mysqli_fetch_assoc($data)){
+										$actualID = $actualRow['ID'];
+										?>
+											<tr onclick="window.location='./view_<?= $actualStyle['style'] ?>.php?id_collection=<?php echo $actualID; ?>'">
+												<td class="align-middle text-center">
+													<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
+												</td>
+												<td class="align-middle">
+													<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
+												</td>
+												<td class="align-middle">
+													<?php echo $actualRow['Description']; ?>
+												</td>
+											</tr>
+										<?php
+									}
+								?>
+							</tbody>
+						</table>
+					</div>
 				</div>
-			</div>
-		<?php
-		} else {
-			$contentExists = $contentExists + 1;
-		}
-
-		/* Listas de latas */
-		openConnection();
-
-		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='cans'";
-
-		$data = mysqli_query($databaseConnection, $query);
-
-		if ($data != false && mysqli_num_rows($data) > 0){
-		?>
-			<div class="row d-flex justify-content-between">
-				<div class="col-12">
-					<table class="table table-bordered table-hover">
-						<thead class="thead-dark">
-							<tr>
-								<th colspan="3">
-									<h5>
-										📋 Listas de latas 🥫
-									</h5>
-								</th>
-							</tr>
-							<tr>
-								<th max-width="200px">
-									Imagen descriptiva
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Descripción
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								while($actualRow = mysqli_fetch_assoc($data)){
-									$actualID = $actualRow['ID'];
-									?>
-										<tr onclick="window.location='./view_cans.php?id_collection=<?php echo $actualID; ?>'">
-											<td class="align-middle text-center">
-												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
-											</td>
-											<td class="align-middle">
-												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
-											</td>
-											<td class="align-middle">
-												<?php echo $actualRow['Description']; ?>
-											</td>
-										</tr>
-									<?php
-								}
-							?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		<?php
-		} else {
-			$contentExists = $contentExists + 1;
-		}
-
-
-		/* Listas de libros */
-				openConnection();
-
-		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='books'";
-
-		$data = mysqli_query($databaseConnection, $query);
-
-		if ($data != false && mysqli_num_rows($data) > 0){
-		?>
-			<div class="row d-flex justify-content-between">
-				<div class="col-12">
-					<table class="table table-bordered table-hover">
-						<thead class="thead-dark">
-							<tr>
-								<th colspan="3">
-									<h5>
-										📋 Listas de libros 📚
-									</h5>
-								</th>
-							</tr>
-							<tr>
-								<th max-width="200px">
-									Imagen descriptiva
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Descripción
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								while($actualRow = mysqli_fetch_assoc($data)){
-									$actualID = $actualRow['ID'];
-									?>
-										<tr onclick="window.location='./view_books.php?id_collection=<?php echo $actualID; ?>'">
-											<td class="align-middle text-center">
-												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
-											</td>
-											<td class="align-middle">
-												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
-											</td>
-											<td class="align-middle">
-												<?php echo $actualRow['Description']; ?>
-											</td>
-										</tr>
-									<?php
-								}
-							?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		<?php
-		} else {
-			$contentExists = $contentExists + 1;
-		}
-
-
-		/* Listas de películas */
-				openConnection();
-
-		$query = "SELECT * FROM $tableCollections WHERE UsersLogin='$actualLoginUser' AND Category='movies'";
-
-		$data = mysqli_query($databaseConnection, $query);
-
-		if ($data != false && mysqli_num_rows($data) > 0){
-		?>
-			<div class="row d-flex justify-content-between">
-				<div class="col-12">
-					<table class="table table-bordered table-hover">
-						<thead class="thead-dark">
-							<tr>
-								<th colspan="3">
-									<h5>
-										📋 Listas de películas 🎬
-									</h5>
-								</th>
-							</tr>
-							<tr>
-								<th max-width="200px">
-									Imagen descriptiva
-								</th>
-								<th>
-									Nombre
-								</th>
-								<th>
-									Descripción
-								</th>
-							</tr>
-						</thead>
-						<tbody>
-							<?php
-								while($actualRow = mysqli_fetch_assoc($data)){
-									$actualID = $actualRow['ID'];
-									?>
-										<tr onclick="window.location='./view_movies.php?id_collection=<?php echo $actualID; ?>'">
-											<td class="align-middle text-center">
-												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
-											</td>
-											<td class="align-middle">
-												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
-											</td>
-											<td class="align-middle">
-												<?php echo $actualRow['Description']; ?>
-											</td>
-										</tr>
-									<?php
-								}
-							?>
-						</tbody>
-					</table>
-				</div>
-			</div>
-		<?php
-		} else {
-			$contentExists = $contentExists + 1;
+			<?php
+			} else {
+				$contentExists = $contentExists + 1;
+			}
 		}
 
 
