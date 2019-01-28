@@ -63,7 +63,7 @@
             $data = mysqli_query($databaseConnection, $query);
         }
 
-        header("Location:./view_books.php?id_collection=$actualCollection");
+        header("Location:./view_cans.php?id_collection=$actualCollection");
     }
 
 
