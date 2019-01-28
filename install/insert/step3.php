@@ -69,6 +69,7 @@
 		$tablaItem = 'item';
 		$tablaMovies = 'movies';
 		$tablaMusic = 'music';
+		$tablaCex = 'cex';
 		$tablaUserDefinedCollections = 'userdefinedcollections';
 		$tablaUsers = 'users';
 
@@ -80,6 +81,7 @@
 			$tablaItem = $prefix . $tablaItem;
 			$tablaMovies = $prefix . $tablaMovies;
 			$tablaMusic = $prefix . $tablaMusic;
+			$tablaCex = $prefix . $tablaCex;
 			$tablaUserDefinedCollections = $prefix . $tablaUserDefinedCollections;
 			$tablaUsers = $prefix . $tablaUsers;
 		}
@@ -147,6 +149,14 @@
 			'$bookPublishDate =' . "'`Publish date`';\n" . 
 			'$bookISBN =' . "'ISBN';\n" . 
 			'$bookImage =' . "'Image'; \n\n" . 
+			"/* Table Cex */\n" . 
+			'$tableCex =' . "'`$tablaBooks`';\n\n" . 
+			'$cexName =' . "'Name';\n" . 
+			'$cexURL =' . "'URL';\n" . 
+			'$cexPrice =' . "'Price';\n" . 
+			'$cexLastCheck =' . "'`LastCheck`';\n" . 
+			'$cexAvailable =' . "'Available';\n" . 
+			'$cexImage =' . "'Image'; \n\n" . 
 			"?>";
 
 			$writingConfigFile = fwrite($configFile, $configText);
@@ -190,7 +200,7 @@
 				if($consulta){
 					?>
 					<p class='alert alert-warning'>
-						Se ha eliminado la tabla '<?= $actual ?>' para evitar errores.
+						Se ha comprobado y eliminado la tabla '<?= $actual ?>' para evitar errores.
 					</p>
 					<?php
 				}
@@ -211,7 +221,8 @@
 				[$tablaCollections, "CREATE TABLE $tablaCollections (`ID` int(11) NOT NULL, `Name` varchar(255) NOT NULL DEFAULT 'Mi colección', `Description` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT NULL, `Category` enum('cans','movies','books','music') NOT NULL, `UsersLogin` varchar(16) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
 				[$tablaItem, "CREATE TABLE $tablaItem (`ID` int(20) NOT NULL, `CollectionsID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
 				[$tablaMovies, "CREATE TABLE $tablaMovies (`Title` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Year` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Starring` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Directed_By` varchar(255) COLLATE utf8_spanish_ci NOT NULL, `Format` enum('DVD','VHS','Blu-Ray','Digital','Betamax','(sin indicar)') COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin indicar)', `Barcode` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT '(sin datos)', `Image` varchar(255) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'img/0_movies.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
-				[$tablaMusic, "CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.png', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaMusic, "CREATE TABLE $tablaMusic (`Artist` varchar(255) DEFAULT NULL, `Title` varchar(255) DEFAULT NULL, `Publish Date` date DEFAULT NULL, `Total discs` int(3) DEFAULT NULL, `Record Company` varchar(255) DEFAULT NULL, `Type` varchar(255) DEFAULT NULL, `Barcode` varchar(255) DEFAULT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_music.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
+				[$tablaCex, "CREATE TABLE $tablaCex ( `Name` varchar(100) NOT NULL DEFAULT '', `URL` varchar(250) NOT NULL DEFAULT '', `Price` float NOT NULL, `LastCheck` datetime NOT NULL, `Available` tinyint(1) NOT NULL, `Image` varchar(255) NOT NULL DEFAULT 'img/item/0_cex2.jpg', `ItemID` int(11) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
 				[$tablaUserDefinedCollections, "CREATE TABLE $tablaUserDefinedCollections (`ID` int(11) NOT NULL, `Name` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `Description` varchar(255) COLLATE utf8_spanish_ci DEFAULT NULL, `User_TableID` text COLLATE utf8_spanish_ci, `Image` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Vista` enum('cuadricula','listado') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'listado', `UsersLogin` varchar(16) CHARACTER SET utf8 NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"],
 				[$tablaUsers, "CREATE TABLE $tablaUsers (`Login` varchar(16) CHARACTER SET utf8 NOT NULL, `Password` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `First Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Last Name` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Email` varchar(255) CHARACTER SET utf8 DEFAULT NULL, `Birth Date` date DEFAULT NULL, `Rol` enum('administrator','registered') COLLATE utf8_spanish_ci NOT NULL DEFAULT 'registered', `Avatar` varchar(255) COLLATE utf8_spanish_ci NULL DEFAULT 'img/avatars/bear2.png', `Activated Account` tinyint(1) NOT NULL DEFAULT '0', `Activation Code` int(4) NOT NULL DEFAULT '9517') ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci;"]
 			);
@@ -255,6 +266,7 @@
 				"ALTER TABLE `$tablaCollections` ADD CONSTRAINT `poseen` FOREIGN KEY (`UsersLogin`) REFERENCES `$tablaUsers` (`Login`) ON DELETE CASCADE ON UPDATE CASCADE;",
 				"ALTER TABLE `$tablaItem` ADD CONSTRAINT `Contienen` FOREIGN KEY (`CollectionsID`) REFERENCES `$tablaCollections` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE;",
 				"ALTER TABLE `$tablaMovies` ADD CONSTRAINT `IfItemIsDeleted` FOREIGN KEY (`ItemID`) REFERENCES `$tablaItem` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE; ",
+				"ALTER TABLE `$tablaCex` ADD CONSTRAINT `PerteneceA` FOREIGN KEY (`ItemID`) REFERENCES `$tablaItem` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE; ",
 				"ALTER TABLE `$tablaMusic` ADD CONSTRAINT `DeleteIfItemIsDeleted` FOREIGN KEY (`ItemID`) REFERENCES `$tablaItem` (`ID`) ON DELETE CASCADE ON UPDATE CASCADE; ",
 				"ALTER TABLE `$tablaUserDefinedCollections` ADD CONSTRAINT `Tienen` FOREIGN KEY (`UsersLogin`) REFERENCES `$tablaUsers` (`Login`) ON DELETE CASCADE ON UPDATE CASCADE;"
 			);
