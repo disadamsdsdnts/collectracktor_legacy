@@ -30,9 +30,7 @@
 
         $ID = mysqli_insert_id($databaseConnection);
 
-        /* Me quedé aquí limpiando */
-
-        $query = "INSERT INTO $tableCans($canBrand, $canFlavor, $canQuantity, $canYear, $canBarcode, $canCountry, $canImage, ItemID) VALUES('$itemName', '$itemURL', '$itemPrice', '$itemLastCheck', '$itemBarcode', '$itemAvailable', '$itemImage', '$ID')";
+        $query = "INSERT INTO $tableCex($cexName, $cexURL, $cexPrice, $cexLastCheck, $cexAvailable, $cexImage, ItemID) VALUES('$itemName', '$itemURL', '$itemPrice', '$itemLastCheck', '$itemAvailable', '$itemImage', '$ID')";
 
         $insert = mysqli_query($databaseConnection, $query);
 
@@ -45,7 +43,7 @@
 
             download_image($itemImage, $rutaAGuardar);
 
-            $query = "UPDATE $tableCans SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableCex SET Image='$rutaAGuardar' WHERE ItemID='$ID'";
 
             $data = mysqli_query($databaseConnection, $query);
         } else if(isset($_FILES['itemImage'])){
@@ -54,11 +52,11 @@
             $imageName = $ID . "." . pathinfo($_FILES['itemImage']['name'], PATHINFO_EXTENSION);
             $rutaFinal = $dir_subida . $imageName;
             move_uploaded_file($_FILES['itemImage']['tmp_name'], $rutaFinal);
-            $query = "UPDATE $tableCans SET Image='$rutaFinal' WHERE ItemID='$ID'";
+            $query = "UPDATE $tableCex SET Image='$rutaFinal' WHERE ItemID='$ID'";
             $data = mysqli_query($databaseConnection, $query);
         }
 
-        header("Location:./view_books.php?id_collection=$actualCollection");
+        header("Location:./view_cex.php?id_collection=$actualCollection");
     }
 
 
@@ -88,52 +86,73 @@
     <link rel="stylesheet" type="text/css" href="../css/collections_create.css">
     <link rel="stylesheet" type="text/css" href="../css/add.css">
 
-    <script type="text/javascript" src="../js/add_movies.js"></script>
+    <script type="text/javascript" src="../js/add_cex.js"></script>
 
     <br>
 
     <div class="row justify-content-center">
     	<h3>
-    		🥫 Añadir una nueva entrada a "<?php echo $collectionInfo['Name'] ?>" 🥫
+    		<img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 2.5rem"> Añadir una nueva entrada a "<?php echo $collectionInfo['Name'] ?>" <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 2.5rem">
     	</h3>
     </div>
 
     <div class="row">
-        <div class="col-10">
+        <div class="col-8">
             <div class="card card-header">
                 <h5>
                     Datos
                 </h5>
+                <p>
+                    Esta colección es especial. No se permitirá añadir información adicional de la web de CeX por el momento. En un futuro se permitirá añadir algunas observaciones.
+                </p>
             </div>
 
             <div class="card card-body">
-                <label for="itemName">Marca: </label>
-                <input form="formAdding" type="text" name="itemName" id="itemName" placeholder=" Ej: Coca-Cola" required>
+                <label for="itemName">Nombre: </label>
+                <input form="formAdding" type="text" name="itemName" id="itemName" placeholder=" Ej: Lego Star Wars" required disabled>
 
                 <hr>
 
-                <label for="itemURL">Sabor:</label>
-                <input form="formAdding" type="text" name="itemURL" id="itemURL" placeholder=" Ej: Cola (light)">
+                <label for="itemURL">Dirección</label>
+                <input form="formAdding" type="text" name="itemURL" id="itemURL" placeholder=" Ej: https://cex.es/juegos/LegoStarWars" disabled>
 
                 <hr>
 
-                <label for="itemPrice">Cantidad (cl):</label>
-                <input form="formAdding" type="text" name="itemPrice" id="itemPrice" placeholder=" Ej: 33">
+                <label for="itemPrice">Precio Actual</label>
+                <input form="formAdding" type="text" name="itemPrice" id="itemPrice" placeholder=" Ej: 28,99" disabled>
 
                 <hr>
 
-                <label for="itemLastCheck">Año:</label>
-                <input form="formAdding" type="text" name="itemLastCheck" id="itemLastCheck" placeholder=" Ej: 2014">
+                <label for="itemLastCheck">Última vez comprobado:</label>
+                <input form="formAdding" type="text" name="itemLastCheck" id="itemLastCheck" placeholder=" Ej: Ahora mismo" disabled>
 
                 <hr>
 
-                <label for="itemAvailable">Pais de procedencia:</label>
-                <input form="formAdding" type="text" name="itemAvailable" id="itemAvailable" placeholder=" Ej: Alemania">
+                <label for="itemAvailable">Disponible</label>
+                <input form="formAdding" type="text" name="itemAvailable" id="itemAvailable" placeholder=" Ej: Nope." disabled>
 
                 <hr>
 
                 <label for="itemImage">Imagen:</label>
-                <input form="formAdding" type="file" name="itemImage" id="itemImage">
+                <input form="formAdding" type="file" name="itemImage" id="itemImage" disabled>
+            </div>
+        </div>
+    
+        <div class="col-4">
+                <div class="card card-header">
+                    <h5>
+                        Busca en la base de datos de CeX
+                    </h5>
+                </div>
+
+                <div class="card card-body" id="searcherBody">
+                    <form method="POST" if="formSearch">
+                        <div id="fieldSearch">
+                            <input type="text" name="nameQuery" id="nameSearch" placeholder=" Ej: Lego Indiana Jones">
+                        </div>
+                        <input type="submit" name="submitQuery" id="buttonSearch" value="Buscar">
+                    </form>
+                </div>
             </div>
         </div>
     </div>

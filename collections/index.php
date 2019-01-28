@@ -129,7 +129,7 @@
 
 		$styles = array(
 			[
-				'name' =>  	'📋 Listas de música 🎼', 
+				'name' =>  	'📋 Listas de música 🎼',
 				'style' => 	'music'
 			],
 			[
@@ -143,6 +143,10 @@
 			[
 				'name' => 	'📋 Listas de películas 🎬',
 				'style' => 	'movies'
+			],
+			[
+				'name' => 	'📋 Listas de rastreadores de CeX <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 25px">',
+				'style' => 	'cex'
 			]
 		);
 
@@ -270,7 +274,7 @@
 			$contentExists = $contentExists + 1;
 		}
 
-		if($contentExists == 5){
+		if($contentExists == 6){
 			?>
 				<div class="row d-flex justify-content-between">
 					<div class="col-12 font-italic text-center">

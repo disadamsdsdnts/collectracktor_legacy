@@ -13,7 +13,7 @@
         $collectionImage = 'img/0_cex2.jpg';
         $login = $_SESSION['login'];
 
-        $query = "INSERT INTO $tableCollections (ID, Name, Description, Image, Category, UsersLogin) VALUES (NULL, '$collectionName', '$collectionDesc', '$collectionImage', 'books', '$login')";
+        $query = "INSERT INTO $tableCollections (ID, Name, Description, Image, Category, UsersLogin) VALUES (NULL, '$collectionName', '$collectionDesc', '$collectionImage', 'cex', '$login')";
 
         $result = mysqli_query($databaseConnection, $query);
 
@@ -85,7 +85,7 @@
        
     <hr>
 
-    <form method="POST" action="create_books.php" id="formCreator" enctype="multipart/form-data">
+    <form method="POST" action="create_cex.php" id="formCreator" enctype="multipart/form-data">
         <div class="row card justify-content-center">
             <div class="card-header">
                 <h3>Sube una imagen descriptiva</h3>
