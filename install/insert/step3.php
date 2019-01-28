@@ -181,8 +181,12 @@
 		/* *-*-*-*-*-* Crear las tablas *-*-*-*-*-* */
 		if(!$error && $continue){
 			$cleaner = array(
-				"$tablaBooks", "$tablaCans", "$tablaMovies", "$tablaMusic", "$tablaUserDefinedCollections", "$tablaItem", "$tablaCollections", "$tablaUsers"
+				"$tablaBooks", "$tablaCans", "$tablaMovies", "$tablaMusic", "$tablaCex", "$tablaUserDefinedCollections", "$tablaItem", "$tablaCollections", "$tablaUsers"
 			);
+
+			$sql = "SET FOREIGN_KEY_CHECKS = 0";
+				
+			$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
 			foreach($cleaner as $actual){
 				include (DOCUMENT_ROOT . 'config/config.php');
@@ -213,7 +217,6 @@
 				
 			$consulta = mysqli_query($databaseConnection, $sql) or die(mysqli_error($databaseConnection));
 
-			closeConnection();
 
 			$createTable = array(
 				[$tablaBooks, "CREATE TABLE $tablaBooks (`Title` varchar(255) DEFAULT NULL, `Author` varchar(255) DEFAULT NULL, `Publisher` varchar(255) DEFAULT NULL, `Publish date` date DEFAULT NULL, `ISBN` varchar(255) DEFAULT NULL, `Image` varchar(255) DEFAULT 'img/0_books.jpg', `ItemID` int(20) NOT NULL ) ENGINE=InnoDB DEFAULT CHARSET=utf8;"],
