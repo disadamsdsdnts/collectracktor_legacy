@@ -72,13 +72,14 @@
     }
 
     function cexGet($urlToGet){
+        $urlDecoded = rawurldecode($urlToGet);
         $doc = new DOMDocument('1.0');
 
         libxml_use_internal_errors(TRUE);
 
-        $doc->loadHTML(getLazyHTML($urlToGet));
+        $doc->loadHTML(getLazyHTML($urlDecoded));
 
-        $result = array();
+        $result = array('query');
         
         $nameTmp = getElementsByClass($doc, 'div', 'productNamecustm');
 
@@ -108,12 +109,13 @@
 
         $result = array(
             'name' => "$name", 
+            'link' => "$urlDecoded",
             'image' => "$image", 
             'available' => "$available", 
             'price' => "$price"
         );
 
-        return $result;
+        echo json_encode( $result );
     };
 
     function cexSearch($searchText){
@@ -159,8 +161,4 @@
         cexSearch($_GET['query']);        
     } else if(isset($_GET['url'])){
         cexGet($_GET['url']);
-    }
-
-    if(isset($_GET)){
-        var_dump($_GET);
     }

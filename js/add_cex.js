@@ -22,7 +22,9 @@ function checkUndefined(text){
 function recargaFunciones(){
 	$(document).on("click", "a.searchEntry", function(event) {
     	event.preventDefault();
-    	var query = 'url=' + $(this).attr('href');
+		var query = 'url=' + $(this).attr('href');
+		
+		console.log($(this).attr('href'));
 
     	$.ajax({
 		    type: 'GET',
@@ -33,22 +35,27 @@ function recargaFunciones(){
            	}
 		}).done(function (response){
 			if(response){
+				console.log(response);
 				var queryResult = $.parseJSON('[' + response + ']');
 
-				$("#itemName").attr('value', queryResult[0][1]['name']);
-				$("#itemURL").attr('value', queryResult[0][1]['link']);
-				$("#itemPrice").attr('value', queryResult[0][1]['price']);
-				$("#itemLastCheck").attr('value', queryResult[0][1]['lastcheck']);
-				$("#itemAvailable").attr('value', queryResult[0][1]['available']);
+				$("#itemName").attr('value', queryResult[0]['name']);
+				$("#itemURL").attr('value', queryResult[0]['link']);
+				$("#itemPrice").attr('value', queryResult[0]['price']);
 
-				if(queryResult[0][1]['image'] != ""){
-					var addImage = '<div class="font-italic"><label for="itemImageFromWeb">(se ha añadido la portada de CeX. Si subes una imagen, tendrá preferencia sobre la obtenida de CeX)</label><input type=\"hidden\" value=\"' + queryResult[0][1]['image'] + '\" name="itemImageFromWeb\" id="itemImageFromWeb"></div>';
+				if (queryResult[0]['available'] == 1){
+					$("#itemAvailable").attr('value', 'Disponible');
+				}else{
+					$("#itemAvailable").attr('value', 'No disponible');
+				}
+
+				if(queryResult[0]['image'] != ""){
+					var addImage = '<div class="font-italic"><label for="itemImageFromWeb">(se ha añadido la portada de CeX. Si subes una imagen, tendrá preferencia sobre la obtenida de CeX)</label><input type=\"hidden\" value=\"' + queryResult[0]['image'] + '\" name="itemImageFromWeb\" id="itemImageFromWeb"></div>';
 					
 					$("#formAdding").append(addImage);
 				}
-        	}
 
-        	successData();
+				successData();
+        	}       	
         });
     });
 }
@@ -83,17 +90,17 @@ $(document).ready(function() {
 				var queryResult = $.parseJSON('[' + response + ']');
 
 				var showResults = '';
+				if(queryResult[0][0] == 'search'){
+					queryResult[0].splice(0, 1);
 
-				if(queryResult[0][0] == "search"){
-					queryResult[0].splice(0, 2);
 					var counter = 0;
 					for (var actual in queryResult[0]){
-						var cexUrl = checkUndefined(queryResult[0][actual]['url']),
+						var cexUrl = checkUndefined(queryResult[0][actual]['link']),
 							name = checkUndefined(queryResult[0][actual]['name']),
 							available = checkUndefined(queryResult[0][actual]['available']),
 							price = checkUndefined(queryResult[0][actual]['price']);
 
-						var url = '/collections/search_cex.php?url=' + cexUrl;
+						var url = encodeURIComponent(cexUrl);
 
 						var availableText = '';
 						if(available == 1){

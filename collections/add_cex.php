@@ -128,7 +128,7 @@
 
                 <hr>
 
-                <label for="itemAvailable">Disponible</label>
+                <label for="itemAvailable">Disponibilidad de compra:</label>
                 <input form="formAdding" type="text" name="itemAvailable" id="itemAvailable" placeholder=" Ej: Nope." disabled>
 
                 <hr>
