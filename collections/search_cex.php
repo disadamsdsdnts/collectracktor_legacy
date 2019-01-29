@@ -3,9 +3,9 @@
     ini_set('display_startup_errors', 1);
     error_reporting(E_ALL);
 
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/config/functions.php');
 
-    require_once DOCUMENT_ROOT . '/vendor/autoload.php';
+    require_once (DOCUMENT_ROOT . '/vendor/autoload.php');
 
     use JonnyW\PhantomJs\Client;
     
@@ -55,11 +55,11 @@
 
     function getLazyHTML($urlToObtain){        
         $client = Client::getInstance();
-        $client->getEngine()->setPath(DOCUMENT_ROOT . 'vendor/jonnyw/php-phantomjs/src/JonnyW/PhantomJs');
+        $client->getEngine()->setPath(DOCUMENT_ROOT . 'bin/phantomjs');
         $client->isLazy(); // Tells the client to wait for all resources before rendering
 
-        $request  = $client->getMessageFactory()->createRequest();
-        $request->setTimeout(5000); // Will render page if this timeout is reached and resources haven't finished loading
+        $request = $client->getMessageFactory()->createRequest();
+        $request->setTimeout(3000); // Will render page if this timeout is reached and resources haven't finished loading
 
         $response = $client->getMessageFactory()->createResponse();
         
@@ -121,8 +121,6 @@
 
         $urlToSearch = str_replace(' ', '+', $urlToSearch);
 
-        var_dump($urlToSearch);
-
         $doc = new DOMDocument('1.0');
 
         libxml_use_internal_errors(TRUE);
@@ -131,7 +129,7 @@
 
         $doc->loadHTML($htmlCode);
 
-        $results = array();
+        $results = array("search");
 
         $resultsNode = getElementsByClass($doc, 'div', 'searchRcrd');
 
@@ -156,17 +154,13 @@
 
         echo json_encode( $results );
     }
-
-
-    cexSearch('lego pc batman');
-
-
-    var_dump($_GET['query']);
-
+  
     if(isset($_GET['query'])){
-        cexSearch($_GET['query']);
+        cexSearch($_GET['query']);        
+    } else if(isset($_GET['url'])){
+        cexGet($_GET['url']);
+    }
 
-        
-    } else {
-        echo 'Nothing else';
+    if(isset($_GET)){
+        var_dump($_GET);
     }

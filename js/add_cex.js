@@ -22,11 +22,11 @@ function checkUndefined(text){
 function recargaFunciones(){
 	$(document).on("click", "a.searchEntry", function(event) {
     	event.preventDefault();
-    	var query = 'link=' + $(this).attr('href');
+    	var query = 'url=' + $(this).attr('href');
 
     	$.ajax({
 		    type: 'GET',
-		    url: './search_music.php',
+		    url: './search_cex.php',
 		    data: query,
 		    beforeSend: function () {
                 $("#fieldSearch").html('<img src="../img/loading.gif" style="width: 100%; max-width: 200px"></img>');
@@ -35,17 +35,14 @@ function recargaFunciones(){
 			if(response){
 				var queryResult = $.parseJSON('[' + response + ']');
 
-				$("#itemArtist").attr('value', queryResult[0][1]['artist']);
-				$("#itemTitle").attr('value', queryResult[0][1]['title']);
-				$("#itemPublishDate").attr('value', queryResult[0][1]['publishDate']);
-				$("#itemRecordCompany").attr('value', queryResult[0][1]['recordcompany']);
-				$("#itemType").attr('value', queryResult[0][1]['type']);
-				$("#itemBarcode").attr('value', queryResult[0][1]['barcode']);
-
-				console.log(queryResult[0][1]['image']);
+				$("#itemName").attr('value', queryResult[0][1]['name']);
+				$("#itemURL").attr('value', queryResult[0][1]['link']);
+				$("#itemPrice").attr('value', queryResult[0][1]['price']);
+				$("#itemLastCheck").attr('value', queryResult[0][1]['lastcheck']);
+				$("#itemAvailable").attr('value', queryResult[0][1]['available']);
 
 				if(queryResult[0][1]['image'] != ""){
-					var addImage = '<div class="font-italic"><label for="itemImageFromWeb">(se ha añadido la portada de MusicBrainz. Si subes una imagen, tendrá preferencia sobre la obtenida de MusicBrainz)</label><input type=\"hidden\" value=\"' + queryResult[0][1]['image'] + '\" name="itemImageFromWeb\" id="itemImageFromWeb"></div>';
+					var addImage = '<div class="font-italic"><label for="itemImageFromWeb">(se ha añadido la portada de CeX. Si subes una imagen, tendrá preferencia sobre la obtenida de CeX)</label><input type=\"hidden\" value=\"' + queryResult[0][1]['image'] + '\" name="itemImageFromWeb\" id="itemImageFromWeb"></div>';
 					
 					$("#formAdding").append(addImage);
 				}
@@ -62,7 +59,7 @@ $(document).ready(function() {
 	$("#tryAgain").click(function(event) {
 		event.preventDefault();
 
-		$("#searcherBody").append('<form method=\"POST\" if=\"formSearch\"> <div id=\"fieldSearch\"> <input type=\"text\" name=\"nameQuery\" id=\"nameSearch\" placeholder=\" Ej: El Rey León\"> </div> <input type=\"submit\" name=\"submitQuery\" id=\"buttonSearch\" value=\"Buscar\"> </form>');
+		$("#searcherBody").append('<form method=\"POST\" if=\"formSearch\"> <div id=\"fieldSearch\"> <input type=\"text\" name=\"nameQuery\" id=\"nameSearch\" placeholder=\"Ej: Lego Star Wars PC\"> </div> <input type=\"submit\" name=\"submitQuery\" id=\"buttonSearch\" value=\"Buscar\"> </form>');
 		$("#tryAgain").remove();
 	});
 
@@ -91,14 +88,21 @@ $(document).ready(function() {
 					queryResult[0].splice(0, 2);
 					var counter = 0;
 					for (var actual in queryResult[0]){
-						var url = checkUndefined(queryResult[0][actual]['url']),
+						var cexUrl = checkUndefined(queryResult[0][actual]['url']),
 							name = checkUndefined(queryResult[0][actual]['name']),
 							available = checkUndefined(queryResult[0][actual]['available']),
 							price = checkUndefined(queryResult[0][actual]['price']);
 
-						url = url + '&record=' + record;
+						var url = '/collections/search_cex.php?url=' + cexUrl;
 
-						showResults = showResults + '<a href="' + url + '" class="searchEntry"> ' + '<div class="alert alert-info"> <span class="font-italic">' +  name + '</span> <br> <span class="font-weight-bold"> ' + artist + ' </span> <br> <span> ' + available + ' </span> <br> <span> ' + price + '</span> </div>' + ' </a>';
+						var availableText = '';
+						if(available == 1){
+							availableText = 'Disponible';
+						} else {
+							availableText = 'No disponible';
+						}
+
+						showResults = showResults + '<a href="' + url + '" class="searchEntry"> ' + '<div class="alert alert-info"> <span class="font-italic">' + name + '</span> <br> <span>' + availableText + ' </span> <br> <span>' + price + '</span> </div>' + '</a>';
 
 						counter++;
 
