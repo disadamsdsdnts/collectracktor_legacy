@@ -109,32 +109,32 @@
 
             <div class="card card-body">
                 <label for="itemName">Nombre: </label>
-                <input form="formAdding" type="text" name="itemName" id="itemName" placeholder=" Ej: Lego Star Wars" required disabled>
+                <input form="formAdding" type="text" name="itemName" id="itemName" placeholder=" Ej: Lego Star Wars" required readonly>
 
                 <hr>
 
                 <label for="itemURL">Dirección</label>
-                <input form="formAdding" type="text" name="itemURL" id="itemURL" placeholder=" Ej: https://cex.es/juegos/LegoStarWars" disabled>
+                <input form="formAdding" type="text" name="itemURL" id="itemURL" placeholder=" Ej: https://cex.es/juegos/LegoStarWars" readonly>
 
                 <hr>
 
                 <label for="itemPrice">Precio Actual</label>
-                <input form="formAdding" type="text" name="itemPrice" id="itemPrice" placeholder=" Ej: 28,99" disabled>
+                <input form="formAdding" type="text" name="itemPrice" id="itemPrice" placeholder=" Ej: 28,99" readonly>
 
                 <hr>
 
                 <label for="itemLastCheck">Última vez comprobado:</label>
-                <input form="formAdding" type="text" name="itemLastCheck" id="itemLastCheck" placeholder=" Ej: Ahora mismo" disabled>
+                <input form="formAdding" type="text" name="itemLastCheck" id="itemLastCheck" placeholder=" Ej: Ahora mismo" readonly>
 
                 <hr>
 
                 <label for="itemAvailable">Disponibilidad de compra:</label>
-                <input form="formAdding" type="text" name="itemAvailable" id="itemAvailable" placeholder=" Ej: Nope." disabled>
+                <input form="formAdding" type="text" name="itemAvailable" id="itemAvailable" placeholder=" Ej: Nope." readonly>
 
                 <hr>
 
                 <label for="itemImage">Imagen:</label>
-                <input form="formAdding" type="file" name="itemImage" id="itemImage" disabled>
+                <input form="formAdding" type="file" name="itemImage" id="itemImage" readonly>
             </div>
         </div>
     
