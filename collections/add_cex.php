@@ -1,4 +1,10 @@
 <?php
+    ini_set('display_errors', 1);
+    ini_set('display_startup_errors', 1);
+    error_reporting(E_ALL);
+
+    date_default_timezone_set('Europe/Madrid');
+
     include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
 
     session_start();
@@ -18,9 +24,15 @@
     if (isset($_POST['addCex'])){
 		$itemName = $_POST['itemName'];
 		$itemURL = $_POST['itemURL'];
-		$itemPrice = $_POST['itemPrice'];
-		$itemLastCheck = date('Y-m-d h:i:s', time());
+		$itemPrice = str_replace('€', '', $_POST['itemPrice']);
+		$itemLastCheck = date('Y-m-d H:i:s', time());
         $itemAvailable = $_POST['itemAvailable'];
+
+        if($itemAvailable == 'Disponible'){
+            $itemAvailable = 1;
+        } else {
+            $itemAvailable = 0;
+        }
         
         $itemImage = "img/item/0_cex2.jpg";
 

@@ -115,13 +115,17 @@
 													<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 												</td>
 												<td class="align-middle">
-													<?php echo '<a href="' . $actualRow['URL'] . '">Enlace</a>'; ?>
+													<?php echo '<a href="' . $actualRow['URL'] . '"><img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 25px"></a>'; ?>
 												</td>
 												<td class="align-middle">
-													<?php echo $actualRow['Price'] . ' €'; ?>
+													<?php echo number_format($actualRow['Price'], 2) . ' €'; ?>
 												</td>
 												<td class="align-middle">
-													<?php echo $actualRow['Available']; ?>
+													<?php if($actualRow['Available'] == 1){
+														echo '✅';
+													}else{
+														echo '❌';
+													}; ?>
 												</td>
 												<td class="align-middle">
 													<?php echo $actualRow['LastCheck']; ?>
