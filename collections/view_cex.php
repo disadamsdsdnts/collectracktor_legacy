@@ -50,14 +50,19 @@
 					<table class="table table-bordered table-hover">
 						<thead class="thead-dark">
 							<tr>
-								<th colspan="5">
+								<th colspan="4">
 									<h5>
 										📋 <?php echo $info['Name']; ?> <img src="https://s3-eu-west-1.amazonaws.com/tpd/logos/57ac42dd0000ff0005935ac1/0x0.png" style="width: 25px">
 									</h5>
 								</th>
 								<th>
 									<a href="./add_cex.php?id=<?php echo $info['ID']; ?>">
-										<button>Añadir nuevo rastreador</button>
+										<button>Añadir</button>
+									</a>
+								</th>
+								<th>
+									<a href="./checkall_cex.php?id=<?php echo $info['ID']; ?>">
+										<button>Comprobar todos</button>
 									</a>
 								</th>
 							</tr>
