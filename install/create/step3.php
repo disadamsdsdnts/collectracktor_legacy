@@ -150,6 +150,17 @@
 			'$bookPublishDate =' . "'`Publish date`';\n" . 
 			'$bookISBN =' . "'ISBN';\n" . 
 			'$bookImage =' . "'Image'; \n\n" . 
+<<<<<<< Updated upstream
+=======
+			"/* Table Cex */\n" . 
+			'$tableCex =' . "'`$tablaCex`';\n\n" . 
+			'$cexName =' . "'Name';\n" . 
+			'$cexURL =' . "'URL';\n" . 
+			'$cexPrice =' . "'Price';\n" . 
+			'$cexLastCheck =' . "'`LastCheck`';\n" . 
+			'$cexAvailable =' . "'Available';\n" . 
+			'$cexImage =' . "'Image'; \n\n" . 
+>>>>>>> Stashed changes
 			"?>";
 
 			$writingConfigFile = fwrite($configFile, $configText);

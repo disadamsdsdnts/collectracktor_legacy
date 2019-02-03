@@ -65,7 +65,7 @@
             $data = mysqli_query($databaseConnection, $query);
         }
 
-        //header("Location:./view_music.php?id_collection=$actualCollection");
+        header("Location: ./view_music.php?id_collection=$actualCollection");
     }
 
 
