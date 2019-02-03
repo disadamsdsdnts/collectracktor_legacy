@@ -95,9 +95,9 @@
 
         $available = '';
         if(trim(getElementsByClass($doc, 'div', 'buyNowButton')[0]->textContent) == 'Agotado'){
-            $available = false;
+            $available = '0';
         } else {
-            $available = true;
+            $available = '1';
         }
 
         $imageDoc = getElementsByClass($doc, 'div', 'productImg');
@@ -116,6 +116,8 @@
         );
 
         echo json_encode( $result );
+
+        return json_encode( $result );
     };
 
     function cexSearch($searchText){
@@ -137,9 +139,9 @@
 
         foreach($resultsNode as $actualResult){
             $name = trim(getElementsByClass($actualResult, 'div', 'desc')[0]->getElementsByTagName('h1')[0]->getElementsByTagName('a')[0]->textContent);
-            //$image = trim(getElementsByClass($actualResult, 'div', 'thumb')[0]->getElementsByTagName('a')[0]->getElementsByTagName('img')[0]->getAttribute('src'));
+            $image = trim(getElementsByClass($actualResult, 'div', 'thumb')[0]->getElementsByTagName('a')[0]->getElementsByTagName('img')[0]->getAttribute('src'));
             $link = 'https://es.webuy.com' . trim(getElementsByClass($actualResult, 'div', 'desc')[0]->getElementsByTagName('h1')[0]->getElementsByTagName('a')[0]->getAttribute('href'));
-            $available = ((getElementsByClass($actualResult, 'div', 'buyNowButton')[0]->textContent) == 'Agotado') ? false : true;
+            $available = ((getElementsByClass($actualResult, 'div', 'buyNowButton')[0]->textContent) == 'Agotado') ? '0' : '1';
             $priceTemp = getElementsByClass($actualResult, 'div', 'priceTxt')[0]->textContent;
 
             $price = explode('Vendemos', $priceTemp);
@@ -147,7 +149,7 @@
 
             $results[] = array(
                 'name' => "$name", 
-                // 'image' => "$image", 
+                'image' => "$image", 
                 'link' => "$link", 
                 'available' => "$available", 
                 'price' => "$price"
@@ -155,6 +157,8 @@
         }
 
         echo json_encode( $results );
+
+        return  json_encode( $results );
     }
   
     if(isset($_GET['query'])){

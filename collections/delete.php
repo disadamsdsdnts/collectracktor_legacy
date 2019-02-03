@@ -19,7 +19,7 @@
 		$data = mysqli_fetch_assoc($infoDB);
 
 		if(($actualLogin == $data['UsersLogin']) && (mysqli_num_rows($infoDB) == 1)){
-			$query = "DELETE FROM `collections` WHERE ID='$collectionToDelete'";
+			$query = "DELETE FROM $tableCollections WHERE ID='$collectionToDelete'";
 
 			$deleting = mysqli_query($databaseConnection, $query);
 

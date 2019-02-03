@@ -44,6 +44,13 @@
 
 	if ($data != false && mysqli_num_rows($data) == 1){
 		$infoID = $info['ID'];
+
+		$query = "SELECT * FROM $tableItem, $tableCex WHERE ($tableItem.ID = $tableCex.ItemID) AND collectionsID='$infoID'";
+
+		$allItems = mysqli_query($databaseConnection, $query);
+
+		$numItems = mysqli_num_rows($allItems);
+
 		?>
 			<div class="row d-flex justify-content-between">
 				<div class="col-12">
@@ -56,13 +63,16 @@
 									</h5>
 								</th>
 								<th>
-									<a href="./add_cex.php?id=<?php echo $info['ID']; ?>">
-										<button>Añadir</button>
-									</a>
-								</th>
-								<th>
+									<?php if($numItems > 0){?>
 									<a href="./checkall_cex.php?id=<?php echo $info['ID']; ?>">
 										<button>Comprobar todos</button>
+									</a>
+									<?php } ?>
+								</th>
+
+								<th>
+									<a href="./add_cex.php?id=<?php echo $info['ID']; ?>">
+										<button>Añadir</button>
 									</a>
 								</th>
 							</tr>
@@ -96,11 +106,9 @@
 						</thead>
 						<tbody>
 							<?php
-								$query = "SELECT * FROM $tableItem, $tableCex WHERE ($tableItem.ID = $tableCex.ItemID) AND collectionsID='$infoID'";
+								
 
-								$allItems = mysqli_query($databaseConnection, $query);
-
-								if ($allItems != false && mysqli_num_rows($allItems) == 0){
+								if ($allItems != false && $numItems == 0){
 									?>
 										<tr>
 											<td colspan="6" class="font-italic text-center">

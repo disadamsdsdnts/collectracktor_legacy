@@ -4,7 +4,7 @@
     error_reporting(E_ALL);
 
     if(isset($_GET['id'])){
-        include_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
+        require_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'config/functions.php');
         require_once($_SERVER['DOCUMENT_ROOT'] . '/' . 'collections/search_cex.php');
 
         $idToUpdate = $_GET['id'];
@@ -17,32 +17,37 @@
             die();
         }
 
-        $getItems = "SELECT * FROM $tableCex WHERE";
+        $itemsToCheck = array();
+
         while($actualRow = mysqli_fetch_assoc($allItems)){
-            $thisID = $actualRow['ID'];
-            $getItems .= " ItemID=$thisID OR";
+            $itemsToCheck[] = $actualRow['ID'];
         }
 
-        $getItems = substr($getItems, 0, -3);
+        if(sizeof($itemsToCheck) !== false && sizeof($itemsToCheck) !== 0){
+            foreach($itemsToCheck as $actualItem){
+                $id = $actualItem;
+                
+                $query = "SELECT * FROM $tableCex WHERE ItemID=$id";
 
-        $allItems = mysqli_query($databaseConnection, $query);
+                $check = mysqli_query($databaseConnection, $query);
 
-        if($allItems != false){
-            while($actualItem = mysqli_fetch_assoc($allItems)){
-                print_r($actualItem);
-                $id = $actualItem['ItemID'];
-                $url = $actualItem['URL'];
+                if($check !== false){
+                    $info = mysqli_fetch_assoc($check);
+                    $url = $info['URL'];
 
-                $result = json_decode(cexGet($url, TRUE));
+                    $result = json_decode(cexGet($url), TRUE);
 
-                if($result != ''){
-                    $date = date('Y-m-d H:i:s', time());
+                    if($result != ''){
+                        $date = date('Y-m-d H:i:s', time());
 
-                    $available = ($result['available'] == 'true' ? '1' : '0');
+                        $available = ($result['available'] == 'true' ? '1' : '0');
 
-                    $price = $result['pricce'];
+                        $price = str_replace('€', '', $result['price']);
 
-                    $update = "UPDATE $tableCex SET LastCheck='$date', Available='$available', Price='$price'";
+                        $update = "UPDATE $tableCex SET LastCheck='$date', Available='$available', Price='$price' WHERE ItemID='$id'";
+
+                        mysqli_query($databaseConnection, $update);
+                    }
                 }
             }
         }

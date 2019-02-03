@@ -24,8 +24,6 @@ function recargaFunciones(){
     	event.preventDefault();
 		var query = 'url=' + $(this).attr('href');
 		
-		console.log($(this).attr('href'));
-
     	$.ajax({
 		    type: 'GET',
 		    url: './search_cex.php',
@@ -35,14 +33,13 @@ function recargaFunciones(){
            	}
 		}).done(function (response){
 			if(response){
-				console.log(response);
 				var queryResult = $.parseJSON('[' + response + ']');
 
 				$("#itemName").attr('value', queryResult[0]['name']);
 				$("#itemURL").attr('value', queryResult[0]['link']);
 				$("#itemPrice").attr('value', queryResult[0]['price']);
 
-				if (queryResult[0]['available'] == 1){
+				if (queryResult[0]['available'] == '1'){
 					$("#itemAvailable").attr('value', 'Disponible');
 				}else{
 					$("#itemAvailable").attr('value', 'No disponible');
@@ -95,21 +92,23 @@ $(document).ready(function() {
 
 					var counter = 0;
 					for (var actual in queryResult[0]){
+						console.log(queryResult[0]);
 						var cexUrl = checkUndefined(queryResult[0][actual]['link']),
 							name = checkUndefined(queryResult[0][actual]['name']),
 							available = checkUndefined(queryResult[0][actual]['available']),
-							price = checkUndefined(queryResult[0][actual]['price']);
+							price = checkUndefined(queryResult[0][actual]['price']),
+							image = checkUndefined(queryResult[0][actual]['image']);
 
 						var url = encodeURIComponent(cexUrl);
 
 						var availableText = '';
-						if(available == 1){
+						if(available == '1'){
 							availableText = 'Disponible';
 						} else {
 							availableText = 'No disponible';
 						}
 
-						showResults = showResults + '<a href="' + url + '" class="searchEntry"> ' + '<div class="alert alert-info"> <span class="font-italic">' + name + '</span> <br> <span>' + availableText + ' </span> <br> <span>' + price + '</span> </div>' + '</a>';
+						showResults = showResults + '<a href="' + url + '" class="searchEntry"> ' + '<div class="alert alert-info"> <table><th><td><img style="width: 75px; margin-right: 1rem;" src="' + image + '"></td><td><span class="font-italic">' + name + '</span> <br> <span>' + availableText + ' </span> <br> <span>' + price + '</span> </td></table></div>' + '</a>';
 
 						counter++;
 
