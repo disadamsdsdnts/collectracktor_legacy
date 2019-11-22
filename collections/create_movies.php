@@ -18,7 +18,7 @@
         $result = mysqli_query($databaseConnection, $query);
 
         $ID = mysqli_insert_id($databaseConnection);
-
+        setlocale(LC_ALL,'en_US.UTF-8');
         if(file_exists($_FILES['descriptiveImage']['tmp_name']) || is_uploaded_file($_FILES['descriptiveImage']['tmp_name'])){
             $dir_subida = 'img/';
             $fichero_subido = $dir_subida . basename($_FILES['descriptiveImage']['name']);

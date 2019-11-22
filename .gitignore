@@ -2,3 +2,9 @@
 config.php
 node_modules
 package-lock.json
+<<<<<<< Updated upstream
+=======
+bin
+vendor
+collections/img/item/
+>>>>>>> Stashed changes

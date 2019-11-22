@@ -95,7 +95,7 @@
 		foreach ($doc->getElementsByTagName('img') as $actualSpan) {
 			$esteEsElItem = $actualSpan->getAttribute('alt');
 
-			if(($esteEsElItem == $name) or ($esteEsElItem == trim($name))){
+			if(($esteEsElItem == $name) || (trim($esteEsElItem) == trim($name))){
 				$image = $actualSpan->getAttribute('src');
 			}
 		}
@@ -142,7 +142,7 @@
 					$name = $actualSearch->getAttribute('title');
 					$name = trim($name);
 					$name = correct_encoding($name);
-					$url = 'https://www.filmaffinity.com' . $actualSearch->getAttribute('href');
+					$url = /*'https://www.filmaffinity.com' . */$actualSearch->getAttribute('href');
 					$results[] = array(
 						'name' => "$name", 'url' => "$url"
 					);

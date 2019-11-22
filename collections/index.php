@@ -186,13 +186,13 @@
 										$actualID = $actualRow['ID'];
 										?>
 											<tr onclick="window.location='./view_<?= $actualStyle['style'] ?>.php?id_collection=<?php echo $actualID; ?>'">
-												<td class="align-middle text-center">
+												<td class="align-middle text-center" style="width:33%">
 													<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 												</td>
-												<td class="align-middle">
+												<td class="align-middle" style="width:33%">
 													<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 												</td>
-												<td class="align-middle">
+												<td class="align-middle" style="width:33%">
 													<?php echo $actualRow['Description']; ?>
 												</td>
 											</tr>
@@ -248,13 +248,13 @@
 									$actualID = $actualRow['ID'];
 									?>
 										<tr onclick="window.location='./view_predefined.php?id_collection=<?php echo $actualID; ?>'">
-											<td class="align-middle text-center">
+											<td class="align-middle text-center" style="width:33%">
 												<img class="rounded" src="<?php echo $actualRow['Image']; ?>" width="150px">
 											</td>
-											<td class="align-middle">
+											<td class="align-middle" style="width:33%">
 												<?php echo '<strong>' . $actualRow['Name'] . '</strong>'; ?>
 											</td>
-											<td class="align-middle">
+											<td class="align-middle" style="width:33%">
 												<?php echo $actualRow['Description']; ?>
 											</td>
 										</tr>

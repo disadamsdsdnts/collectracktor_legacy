@@ -1,3 +1,8 @@
 body {
   margin: 5%;
 }
+
+#navigation-bar a,
+#navigation-bar a:visited{
+  color: white!important;
+}
