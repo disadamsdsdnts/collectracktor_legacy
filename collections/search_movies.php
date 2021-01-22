@@ -1,169 +1,177 @@
 <?php
-	//header ("content-type: application/json; charset=utf-8");
-	/* Función para saber la respuesta del estado de la web */
-	function is_working_url($url) {
-		$handle = curl_init($url);
-		curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($handle, CURLOPT_NOBODY, true);
-		curl_exec($handle);
-		
-		$httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
-		curl_close($handle);
-		
-		return $httpCode;
-	}
+//header ("content-type: application/json; charset=utf-8");
+/* Función para saber la respuesta del estado de la web */
+function is_working_url($url)
+{
+  $handle = curl_init($url);
+  curl_setopt($handle, CURLOPT_RETURNTRANSFER, true);
+  curl_setopt($handle, CURLOPT_NOBODY, true);
+  curl_exec($handle);
 
-	function correct_encoding($text) {
-	    $current_encoding = mb_detect_encoding($text, 'auto');
-	    $text = iconv($current_encoding, 'UTF-8', $text);
-	    return $text;
-	}
-	
-	/* Obtener la información de la película */
-	function getInfo($movie) {
-		$html = file_get_contents($movie);
+  $httpCode = curl_getinfo($handle, CURLINFO_HTTP_CODE);
+  curl_close($handle);
 
-		$doc = new DOMDocument('1.0');
+  return $httpCode;
+}
 
-		libxml_use_internal_errors(TRUE);
+function correct_encoding($text)
+{
+  $current_encoding = mb_detect_encoding($text, 'auto');
+  $text = iconv($current_encoding, 'UTF-8', $text);
+  return $text;
+}
 
-		$doc->loadHTML($html);
+/* Obtener la información de la película */
+function getInfo($movie)
+{
+  $html = file_get_contents($movie);
 
-		/*Obtener el Nombre */
-		$name = correct_encoding($doc->getElementById('main-title')->nodeValue);
-		
-		/*Obtener el año*/
-		$year = 0;
+  $doc = new DOMDocument('1.0');
 
-		foreach ($doc->getElementsByTagName('dd') as $key) {
-			$esteEsElItem = $key->getAttribute('itemprop');
-			if($esteEsElItem == 'datePublished'){
-				$year = $key->nodeValue;
-			}
-		}
+  libxml_use_internal_errors(TRUE);
 
-		$director = "";
+  $doc->loadHTML($html);
 
-		foreach ($doc->getElementsByTagName('dd') as $actualDD) {
-			$esteEsElItem = $actualDD->getAttribute('class');
+  /*Obtener el Nombre */
+  $name = correct_encoding($doc->getElementById('main-title')->nodeValue);
 
-			if($esteEsElItem == 'directors'){
-				$getSpan = $actualDD->getElementsByTagName('span');
+  /*Obtener el año*/
+  $year = 0;
 
-				foreach ($getSpan as $actualSpan) {
-					$getA = $actualSpan->getElementsByTagName('a');
+  foreach ($doc->getElementsByTagName('dd') as $key) {
+    $esteEsElItem = $key->getAttribute('itemprop');
+    if ($esteEsElItem == 'datePublished') {
+      $year = $key->nodeValue;
+    }
+  }
 
-					foreach ($getA as $getDirector) {
-						$director = $director . trim($getDirector->nodeValue) . ', ';
-					}
-				}
-			}
-		}
+  $director = "";
 
-		/* Obteniendo reparto */
+  foreach ($doc->getElementsByTagName('dd') as $actualDD) {
+    $esteEsElItem = $actualDD->getAttribute('class');
 
-		$cast = "";
+    if ($esteEsElItem == 'directors') {
+      $getSpan = $actualDD->getElementsByTagName('span');
 
-		$contador = 0;
+      foreach ($getSpan as $actualSpan) {
+        $getA = $actualSpan->getElementsByTagName('a');
 
-		foreach ($doc->getElementsByTagName('span') as $actualSpan) {
-			$esteEsElItem = $actualSpan->getAttribute('class');
+        foreach ($getA as $getDirector) {
+          $director = $director . trim($getDirector->nodeValue) . ', ';
+        }
+      }
+    }
+  }
 
-			if($esteEsElItem == 'cast'){
-				$getA = $actualSpan->getElementsByTagName('a');
+  /* Obteniendo reparto */
 
-				foreach ($getA as $actualA) {
-					$getSpan = $actualA->getElementsByTagName('span');
+  $cast = "";
 
-					foreach ($getSpan as $theLastOne) {
-						$cast = $cast . $theLastOne->nodeValue . ', ';
+  $contador = 0;
 
-						$contador = $contador + 1;
+  foreach ($doc->getElementsByTagName('span') as $actualSpan) {
+    $esteEsElItem = $actualSpan->getAttribute('class');
 
-						if($contador == 5){
-							break 3;
-						}
+    if ($esteEsElItem == 'cast') {
+      $getA = $actualSpan->getElementsByTagName('a');
 
-					}
-				}
-			}
-		}
+      foreach ($getA as $actualA) {
+        $getSpan = $actualA->getElementsByTagName('span');
 
-		/* Obtenemos el póster */
-		$image = "";
+        foreach ($getSpan as $theLastOne) {
+          $cast = $cast . $theLastOne->nodeValue . ', ';
 
-		foreach ($doc->getElementsByTagName('img') as $actualSpan) {
-			$esteEsElItem = $actualSpan->getAttribute('alt');
+          $contador = $contador + 1;
 
-			if(($esteEsElItem == $name) or ($esteEsElItem == trim($name))){
-				$image = $actualSpan->getAttribute('src');
-			}
-		}
+          if ($contador == 5) {
+            break 3;
+          }
+        }
+      }
+    }
+  }
 
-		$name = trim($name);
-		$cast = trim($cast);
-		$director = trim($director);
+  /* Obtenemos el póster */
+  $image = "";
 
-		if (substr($cast, -1) == ','){
-			$cast = substr($cast, 0, -1);
-		}
+  foreach ($doc->getElementsByTagName('img') as $actualSpan) {
+    $esteEsElItem = $actualSpan->getAttribute('alt');
 
-		if (substr($director, -1) == ','){
-			$director = substr($director, 0, -1);
-		}
+    if (($esteEsElItem == $name) or ($esteEsElItem == trim($name))) {
+      $image = $actualSpan->getAttribute('src');
+    }
+  }
 
-		$response = array(
-			"movie",
-			array('name' => $name, 'year' => $year, 'cast' => $cast, 'director' => $director, 'image' => $image )
-		);
+  $name = trim($name);
+  $cast = trim($cast);
+  $director = trim($director);
 
-		echo json_encode( $response );
-	}
+  if (substr($cast, -1) == ',') {
+    $cast = substr($cast, 0, -1);
+  }
 
-	/* Obtener todos los resultados de una búsqueda inexacta. */
-	function getSearch($movie) {
-		$html = file_get_contents($movie);
+  if (substr($director, -1) == ',') {
+    $director = substr($director, 0, -1);
+  }
 
-		$doc = new DOMDocument('1.0');
+  $response = array(
+    "movie",
+    array(
+      'name' => $name,
+      'year' => $year,
+      'cast' => $cast,
+      'director' => $director,
+      'image' => $image
+    )
+  );
 
-		libxml_use_internal_errors(TRUE);
+  echo json_encode($response);
+}
 
-		$doc->loadHTML($html);
+/* Obtener todos los resultados de una búsqueda inexacta. */
+function getSearch($movie)
+{
+  $html = file_get_contents($movie);
 
-		$results = array("search");
+  $doc = new DOMDocument('1.0');
 
-		foreach ($doc->getElementsByTagName('div') as $actualDiv) {
-			$isMovie = $actualDiv->getAttribute('class');
+  libxml_use_internal_errors(TRUE);
 
-			if($isMovie == 'mc-poster'){
-				$getAtag = $actualDiv->getElementsByTagName('a');
+  $doc->loadHTML($html);
 
-				foreach ($getAtag as $actualSearch) {
-					$name = $actualSearch->getAttribute('title');
-					$name = trim($name);
-					$name = correct_encoding($name);
-					$url = 'https://www.filmaffinity.com' . $actualSearch->getAttribute('href');
-					$results[] = array(
-						'name' => "$name", 'url' => "$url"
-					);
-				}
-			}
-		}
+  $results = array("search");
 
-		echo json_encode( $results );
-	}
+  foreach ($doc->getElementsByTagName('div') as $actualDiv) {
+    $isMovie = $actualDiv->getAttribute('class');
 
-	$movie = "";
+    if ($isMovie == 'mc-poster') {
+      $getAtag = $actualDiv->getElementsByTagName('a');
 
-	if(isset($_GET['query'])){
-		$movie = 'https://www.filmaffinity.com/es/search.php?stext=' . str_replace(' ', '+', $_GET['query']);
-	}
+      foreach ($getAtag as $actualSearch) {
+        $name = $actualSearch->getAttribute('title');
+        $name = trim($name);
+        $name = correct_encoding($name);
+        $url = 'https://www.filmaffinity.com' . $actualSearch->getAttribute('href');
+        $results[] = array(
+          'name' => "$name", 'url' => "$url"
+        );
+      }
+    }
+  }
 
-	if(isset($_GET['link'])){
-		getInfo($_GET['link']);
-	} else if(is_working_url($movie) == 303){
-		getInfo($movie);
-	} else {
-		getSearch($movie);
-	}
-?>
+  echo json_encode($results);
+}
+
+$movie = "";
+
+if (isset($_GET['query'])) {
+  $movie = 'https://www.filmaffinity.com/es/search.php?stext=' . str_replace(' ', '+', $_GET['query']);
+}
+
+if (isset($_GET['link'])) {
+  getInfo($_GET['link']);
+} else if (is_working_url($movie) == 303) {
+  getInfo($movie);
+} else {
+  getSearch($movie);
+}
